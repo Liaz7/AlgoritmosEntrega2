@@ -5,10 +5,11 @@ public class Cola <T extends Comparable<T>> implements ICola<T> {
     private NodoCola inicio;
     private NodoCola fin;
     private int cantidad;
-    
-    public Cola () {
+
+    public Cola() {
         cantidad = 0;
     }
+
     /**
      * @return the inicio
      */
@@ -50,11 +51,12 @@ public class Cola <T extends Comparable<T>> implements ICola<T> {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    
+
     @Override
     public void encolar(NodoCola nodo) {
         NodoCola nuevo = new NodoCola((Comparable) nodo);        
         nuevo.setSig(this.getInicio());
+      
         this.setInicio(nuevo);
         if (esVacia()) {
             fin = inicio;
@@ -85,7 +87,7 @@ public class Cola <T extends Comparable<T>> implements ICola<T> {
 
     @Override
     public NodoCola frente() {
-        if(!this.esVacia()){
+        if (!this.esVacia()) {
             return this.getInicio();
         }
         return null;
@@ -94,16 +96,16 @@ public class Cola <T extends Comparable<T>> implements ICola<T> {
     @Override
     public void mostrarCola() {
         NodoCola mostrar = getInicio();
-        while(mostrar != null) {
+        while (mostrar != null) {
             System.out.println(mostrar.getDato());
             mostrar = mostrar.getSig();
         }
-            
+
     }
 
     @Override
     public void mostrarREC(NodoCola nodo) {
-        if(nodo!=null){
+        if (nodo != null) {
             System.out.println(nodo.getDato());
             mostrarREC(nodo.getSig());
         }

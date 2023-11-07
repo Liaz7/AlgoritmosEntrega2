@@ -130,7 +130,23 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno reservaConsulta(int codMedico, int ciPaciente, Date fecha) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
+        
+        while(nodoActual != null){
+            
+         Consulta consultaExistente = nodoActual.getDato();
+         
+        if(consultaExistente.getCodMedico() == codMedico && consultaExistente.getCiPaciente() == ciPaciente && consultaExistente.getFecha() == fecha){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        
+        nodoActual = nodoActual.getSig();
+            
+        }
+        
+        if(_consultaPacientes.esVacia()){
+            
+        }
     }
 
     @Override

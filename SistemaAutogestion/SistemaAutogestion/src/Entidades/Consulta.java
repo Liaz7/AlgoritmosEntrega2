@@ -76,6 +76,34 @@ public class Consulta implements Comparable<Consulta> {
     public String toString() {
         return "Consulta{" + "codMedico=" + codMedico + ", ciPaciente=" + ciPaciente + ", fecha=" + fecha + '}';
     }
+
+    /**
+     * @return the numero
+     */
+    public int getNumero() {
+        return numero;
+    }
+
+    /**
+     * @param numero the numero to set
+     */
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    /**
+     * @return the estado
+     */
+    public String getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     
     
 }
