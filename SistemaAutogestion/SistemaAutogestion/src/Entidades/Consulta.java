@@ -19,11 +19,11 @@ public class Consulta implements Comparable<Consulta> {
 
     }
 
+    private int numero;
     private int codMedico;
     private int ciPaciente;
-    private Date fecha;
-
-    
+    private Date fecha;    
+    private String estado;
 
     /**
      * @return the codMedico

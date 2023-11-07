@@ -3,13 +3,16 @@ package sistemaAutogestion;
 import java.util.Date;
 import Entidades.Medico;
 import Entidades.Paciente;
+import Entidades.Consulta;
 import tads.Lista;
 import tads.NodoLista;
+import tads.Cola;
+import tads.NodoCola;
 
 public class Sistema implements IObligatorio {
-
     public Lista<Medico> _medicos = new Lista();
     public Lista<Paciente> _pacientes = new Lista();
+    public Cola<Paciente> _consultaPacientes = new Cola();
 
     @Override
     public Retorno crearSistemaDeAutogestion(int maxPacientesporMedico) {
@@ -134,9 +137,73 @@ public class Sistema implements IObligatorio {
     public Retorno cancelarReserva(int codMedico, int ciPaciente) {
         return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
     }
+    
+    //Pre: El atributo CI no puede ser vacio     
+    //Post: Devuelve true si existe ese paciente y falso por si no.
+    private boolean existePacientePorCI(int Ci) {
+        NodoLista<Paciente> nodoActual = _pacientes.getInicio();
+        NodoLista<Paciente> nodoAnterior = null;        
+        
+        while (nodoActual != null) {
+            Paciente pacienteExistente = nodoActual.getDato();
+            if (pacienteExistente.getCi() == Ci) {                     
+                return true;                
+            }
+            nodoAnterior = nodoActual;
+            nodoActual = nodoActual.getSiguiente();
+        }
+               
+        return false;        
+    }    
+    
+    private NodoCola<Consulta> existePacienteConCunsultaDadaUnaFecha(int codMedico, int CIPaciente, Date fecha){
+        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
+        NodoCola<Consulta> nodoAnterior = null;
+        
+        while (nodoActual != null) {
+            Consulta consultaActual = nodoActual.getDato();
+            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico) {                     
+                return nodoActual;                
+            }
+            
+            nodoAnterior = nodoActual;
+            nodoActual = nodoActual.getSig();
+        }
+               
+        return nodoActual;  
+    }
+    
+    //Pre: codMedico y CIPaciente no son nulos y son ambos de tipo int
+    //Post: Devuelve true existe una cosnulta para el paciente:CIPaciente con el medico:codMedico
+    private boolean existePacienteConConsultas(int codMedico, int CIPaciente){
+        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
+        NodoCola<Consulta> nodoAnterior = null;
+        
+        while (nodoActual != null) {
+            Consulta consultaActual = nodoActual.getDato();
+            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico) {                     
+                return true;                
+            }
+            
+            nodoAnterior = nodoActual;
+            nodoActual = nodoActual.getSig();
+        }
+               
+        return false;    
+    }
 
     @Override
     public Retorno anunciaLlegada(int codMedico, int CIPaciente) {
+        Date fechaActual = new Date();
+         
+        if(!existePacientePorCI(CIPaciente)){
+            return new Retorno(Retorno.resultado.ERROR_1);
+        }
+        
+        if(!existePacienteConConsultas(codMedico, CIPaciente)){
+            return new Retorno(Retorno.resultado.ERROR_2);
+        }
+        
         return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
     }
 
