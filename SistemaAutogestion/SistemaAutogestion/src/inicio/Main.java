@@ -7,6 +7,7 @@ import sistemaAutogestion.Prueba;
 import java.text.ParseException;
 import Entidades.Medico;
 import Entidades.Paciente;
+import Entidades.Consulta;
 
 public class Main {
 
@@ -15,15 +16,23 @@ public class Main {
         interfaz();
         Sistema s = new Sistema();
         Prueba p = new Prueba();
-        juegoDePruebaSistemaDeAutogestion(s, p);
+        /*juegoDePruebaSistemaDeAutogestion(s, p);
         juegoDePruebaMedicos(s, p);
         juegoDePruebaPacientes(s, p);
-        juegoDePruebaNoImplementada(s, p);
+        juegoDePruebaNoImplementada(s, p);*/
+        juegoDePruebaConsultas(s,p);
 
         p.imprimirResultadosPrueba();
     }
+    
+    public static void juegoDePruebaConsultas(Sistema s, Prueba p){
+        p.ver(s.reservaConsulta(1, 1, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 1, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(2, 2, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        s.listarConsultas(1);
+    }
 
-    public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
+    /*public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
         p.ver(s.crearSistemaDeAutogestion(15).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
         p.ver(s.crearSistemaDeAutogestion(5).resultado, Retorno.Resultado.OK, "Se crea sistema para 5 pacientes");
         p.ver(s.crearSistemaDeAutogestion(18).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 18 pacientes");
@@ -133,7 +142,7 @@ public class Main {
         p.ver(s.historiaClínicaPaciente(53243471).resultado, Retorno.Resultado.ERROR_4, "Funcionalidad no implementada");
         p.ver(s.reporteDePacientesXFechaYEspecialidad(04, 2010).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
 
-    }
+    }*/
 
     public static void interfaz() {
         System.out.println("¡Bienvenido al Sistema de Gestión de Consultas Médicas!");

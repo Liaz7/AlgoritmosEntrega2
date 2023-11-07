@@ -12,17 +12,18 @@ import java.util.Date;
  */
 public class Consulta implements Comparable<Consulta> {
 
-    public Consulta(int codMedico, int ciPaciente, Date fecha) {
+    public Consulta(int codMedico, int ciPaciente, Date fecha, int numero) {
         this.codMedico = codMedico;
         this.ciPaciente = ciPaciente;
         this.fecha = fecha;
+        this.numero = numero;
 
     }
 
     private int numero;
     private int codMedico;
     private int ciPaciente;
-    private Date fecha;    
+    private Date fecha;
     private String estado;
 
     /**
@@ -66,11 +67,11 @@ public class Consulta implements Comparable<Consulta> {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    
+
     @Override
-    public int compareTo(Consulta o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+public int compareTo(Consulta o) {
+    return Integer.compare(this.getNumero(), o.getNumero());
+}
 
     @Override
     public String toString() {
@@ -104,6 +105,5 @@ public class Consulta implements Comparable<Consulta> {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
+
 }
