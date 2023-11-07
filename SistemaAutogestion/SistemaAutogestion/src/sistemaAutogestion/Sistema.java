@@ -3,13 +3,17 @@ package sistemaAutogestion;
 import java.util.Date;
 import Entidades.Medico;
 import Entidades.Paciente;
+import Entidades.Consulta;
 import tads.Lista;
 import tads.NodoLista;
+import tads.Cola;
+import tads.NodoCola;
 
 public class Sistema implements IObligatorio {
 
     public Lista<Medico> _medicos = new Lista();
     public Lista<Paciente> _pacientes = new Lista();
+    public Cola<Consulta> _consultaPacientes = new Cola();
 
     @Override
     public Retorno crearSistemaDeAutogestion(int maxPacientesporMedico) {
@@ -127,7 +131,23 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno reservaConsulta(int codMedico, int ciPaciente, Date fecha) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
+        
+        while(nodoActual != null){
+            
+         Consulta consultaExistente = nodoActual.getDato();
+         
+        if(consultaExistente.getCodMedico() == codMedico && consultaExistente.getCiPaciente() == ciPaciente && consultaExistente.getFecha() == fecha){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        
+        nodoActual = nodoActual.getSig();
+            
+        }
+        
+        if(_consultaPacientes.esVacia()){
+            
+        }
     }
 
     @Override

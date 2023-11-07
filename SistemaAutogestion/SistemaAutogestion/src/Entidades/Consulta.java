@@ -12,16 +12,18 @@ import java.util.Date;
  */
 public class Consulta implements Comparable<Consulta> {
 
-    public Consulta(int codMedico, int ciPaciente, Date fecha) {
+    public Consulta(int numero,int codMedico, int ciPaciente, Date fecha, String estado) {
         this.codMedico = codMedico;
         this.ciPaciente = ciPaciente;
         this.fecha = fecha;
 
     }
 
+    private int numero;
     private int codMedico;
     private int ciPaciente;
     private Date fecha;
+    private String estado;
 
     
 
@@ -75,6 +77,34 @@ public class Consulta implements Comparable<Consulta> {
     @Override
     public String toString() {
         return "Consulta{" + "codMedico=" + codMedico + ", ciPaciente=" + ciPaciente + ", fecha=" + fecha + '}';
+    }
+
+    /**
+     * @return the numero
+     */
+    public int getNumero() {
+        return numero;
+    }
+
+    /**
+     * @param numero the numero to set
+     */
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    /**
+     * @return the estado
+     */
+    public String getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
     
     
