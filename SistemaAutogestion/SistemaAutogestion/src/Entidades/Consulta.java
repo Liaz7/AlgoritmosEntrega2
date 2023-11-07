@@ -24,7 +24,7 @@ public class Consulta implements Comparable<Consulta> {
     private int ciPaciente;
     private Date fecha;    
     private String estado;
-
+    
     /**
      * @return the codMedico
      */
