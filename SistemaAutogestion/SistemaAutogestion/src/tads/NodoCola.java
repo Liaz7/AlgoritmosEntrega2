@@ -1,5 +1,4 @@
-
-package colas;
+package tads;
 
 
 public class NodoCola <T extends Comparable<T>>{
