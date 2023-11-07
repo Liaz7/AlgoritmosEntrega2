@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class Consulta implements Comparable<Consulta> {
 
-    public Consulta(int numero,int codMedico, int ciPaciente, Date fecha, String estado) {
+    public Consulta(int codMedico, int ciPaciente, Date fecha) {
         this.codMedico = codMedico;
         this.ciPaciente = ciPaciente;
         this.fecha = fecha;
@@ -22,10 +22,8 @@ public class Consulta implements Comparable<Consulta> {
     private int numero;
     private int codMedico;
     private int ciPaciente;
-    private Date fecha;
+    private Date fecha;    
     private String estado;
-
-    
 
     /**
      * @return the codMedico

@@ -1,6 +1,6 @@
 package tads;
 
-public class Cola<T extends Comparable<T>> implements ICola<T> {
+public class Cola <T extends Comparable<T>> implements ICola<T> {
 
     private NodoCola inicio;
     private NodoCola fin;
@@ -54,10 +54,9 @@ public class Cola<T extends Comparable<T>> implements ICola<T> {
 
     @Override
     public void encolar(NodoCola nodo) {
-
-        NodoCola<T> nuevo = new NodoCola((Comparable) nodo);
-        nuevo.setSig(this.inicio);
-
+        NodoCola nuevo = new NodoCola((Comparable) nodo);        
+        nuevo.setSig(this.getInicio());
+      
         this.setInicio(nuevo);
         if (esVacia()) {
             fin = inicio;
@@ -67,8 +66,7 @@ public class Cola<T extends Comparable<T>> implements ICola<T> {
     @Override
     public void desencolar() {
         if (!esVacia()) {
-            this.inicio = this.inicio.getSig();
-
+            this.inicio = this.inicio.getSig();           
         }
     }
 
