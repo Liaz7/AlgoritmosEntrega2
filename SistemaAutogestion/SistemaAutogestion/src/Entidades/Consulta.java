@@ -16,7 +16,6 @@ public class Consulta implements Comparable<Consulta> {
         this.codMedico = codMedico;
         this.ciPaciente = ciPaciente;
         this.fecha = fecha;
-
     }
 
     private int numero;
@@ -24,6 +23,7 @@ public class Consulta implements Comparable<Consulta> {
     private int ciPaciente;
     private Date fecha;    
     private String estado;
+    private String detalle;
     
     /**
      * @return the codMedico
@@ -38,7 +38,11 @@ public class Consulta implements Comparable<Consulta> {
     public void setCodMedico(int codMedico) {
         this.codMedico = codMedico;
     }
-
+    
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+    
     /**
      * @return the ciPaciente
      */
@@ -69,7 +73,7 @@ public class Consulta implements Comparable<Consulta> {
     
     @Override
     public int compareTo(Consulta o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.getFecha().compareTo(o.getFecha());
     }
 
     @Override
