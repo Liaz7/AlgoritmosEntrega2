@@ -172,7 +172,7 @@ public class ListaDoble<T extends Comparable<T>> implements IListaDoble<T> {
         }
 
     }
-
+        
     @Override
     public boolean buscarElemento(T dato) {
         if (this.esVacia()) {
