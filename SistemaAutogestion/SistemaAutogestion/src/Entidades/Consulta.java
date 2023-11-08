@@ -19,6 +19,7 @@ public class Consulta implements Comparable<Consulta> {
         this.numero = numero;
         this.estado = estado;
 
+
     }
 
     private int numero;
@@ -26,7 +27,8 @@ public class Consulta implements Comparable<Consulta> {
     private int ciPaciente;
     private Date fecha;
     private String estado;
-
+    private String detalle;
+    
     /**
      * @return the codMedico
      */
@@ -40,7 +42,11 @@ public class Consulta implements Comparable<Consulta> {
     public void setCodMedico(int codMedico) {
         this.codMedico = codMedico;
     }
-
+    
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+    
     /**
      * @return the ciPaciente
      */
@@ -70,9 +76,9 @@ public class Consulta implements Comparable<Consulta> {
     }
 
     @Override
-public int compareTo(Consulta o) {
-    return Integer.compare(this.getNumero(), o.getNumero());
-}
+    public int compareTo(Consulta o) {
+        return this.getFecha().compareTo(o.getFecha());
+    }
 
     @Override
     public String toString() {
