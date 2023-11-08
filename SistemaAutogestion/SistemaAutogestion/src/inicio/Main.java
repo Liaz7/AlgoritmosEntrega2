@@ -20,15 +20,23 @@ public class Main {
         juegoDePruebaMedicos(s, p);
         juegoDePruebaPacientes(s, p);
         juegoDePruebaNoImplementada(s, p);*/
-        juegoDePruebaConsultas(s,p);
+        juegoDePruebaConsultas(s, p);
 
         p.imprimirResultadosPrueba();
     }
-    
-    public static void juegoDePruebaConsultas(Sistema s, Prueba p){
-        p.ver(s.reservaConsulta(1, 1, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 1, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(2, 2, new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+
+    public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Ya existe reserva");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(1, 3, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 4, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 5, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 6, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 7, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+
+        p.ver(s.reservaConsulta(2, 2, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
         s.listarConsultas(1);
     }
 
@@ -143,7 +151,6 @@ public class Main {
         p.ver(s.reporteDePacientesXFechaYEspecialidad(04, 2010).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
 
     }*/
-
     public static void interfaz() {
         System.out.println("¡Bienvenido al Sistema de Gestión de Consultas Médicas!");
         System.out.println("=======================================================");
