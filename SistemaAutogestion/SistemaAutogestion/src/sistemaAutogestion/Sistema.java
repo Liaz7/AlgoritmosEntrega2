@@ -298,7 +298,7 @@ public class Sistema implements IObligatorio {
             return new Retorno(Retorno.resultado.ERROR_2);
         }
 
-        consulta.setEstado("terminada");
+        consulta.setEstado("cerrada");
         consulta.setDetalle(detalleDeConsulta);
         _historialClinico.agregarOrd(consulta);
         return new Retorno(Retorno.resultado.OK);
@@ -323,10 +323,10 @@ public class Sistema implements IObligatorio {
 
     private void agregarConsultasDePacienteAlHistorialClinico(Cola<Consulta> consultas) {
         while (!consultas.esVacia()) {
-            NodoCola<Consulta> nodoConsulta = consultas.frente(); 
+            NodoCola<Consulta> nodoConsulta = consultas.frente();
             Consulta consulta = nodoConsulta.getDato();
             consulta.setEstado("no asistió");
-            _historialClinico.agregarOrd(consulta); 
+            _historialClinico.agregarOrd(consulta);
             consultas.desencolar();
         }
     }
@@ -424,15 +424,94 @@ consultasOrdenadas.mostrarCola();
     }
 
     @Override
-    public Retorno historiaClínicaPaciente(int ci
-    ) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+    public Retorno historiaClínicaPaciente(int ci) {
+        if (!existePacientePorCI(ci)) {
+            return new Retorno(Retorno.resultado.ERROR_1);
+        }
+
+        _historialClinico.mostrarRec();
+        return new Retorno(Retorno.resultado.OK);
+    }
+
+    private int obtenerDiasDelMes(int mes) {
+        switch (mes) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30;
+            case 2:
+                return 28;
+            default:
+                return -1;
+        }
+    }
+
+    private int obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(Date fecha, String estado, int esp) {
+        NodoDoble<Consulta> aux = _historialClinico.getInicio();
+        Consulta consulta = aux.getDato();
+        int cantidad = 0;
+
+        while (aux != null) {
+            if (consulta.getFecha() == fecha && consulta.getEstado() == estado) {
+                NodoLista<Medico> nodoMedico = obtenerMedicoPorCodigo(consulta.getCodMedico());
+                Medico medico = nodoMedico.getDato();
+                if (medico.getEspecialidad() == esp) {
+                    cantidad++;
+                }
+            }
+
+            aux = aux.getSig();
+        }
+
+        return cantidad;
+    }
+
+    private void agregarCantidadConsultasDentroDeUnaMatriz(int[][] mat, int cantidadDias, int espMax, int mes, int año) {
+        String estado = "cerrada";
+        int especialidad = 0;
+        int dia = 0;
+
+        while (dia < cantidadDias && especialidad < espMax) {
+            Date fecha = new Date(año, mes, dia);
+            int cantidadConsultas = obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(fecha, estado, especialidad);
+            mat[dia][especialidad] = cantidadConsultas;
+            
+            especialidad++;
+            
+            if(especialidad == espMax) {
+                especialidad = 0;
+                dia++;
+            }
+        }
+
     }
 
     @Override
-    public Retorno reporteDePacientesXFechaYEspecialidad(int mes, int año
-    ) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+    public Retorno reporteDePacientesXFechaYEspecialidad(int mes, int año) {
+        Retorno retError = new Retorno(Retorno.resultado.ERROR_1);
+        int cantidadDias = obtenerDiasDelMes(mes);
+        int espMax = 20;
+
+        if (cantidadDias == -1) {
+            return retError;
+        }
+
+        if (año < 2020 || año > 2023) {
+            return retError;
+        }
+
+        int reporte[][] = new int[cantidadDias][espMax];
+        agregarCantidadConsultasDentroDeUnaMatriz(reporte, cantidadDias, espMax, mes, año);
+        return new Retorno(Retorno.resultado.OK);
     }
 
 }
