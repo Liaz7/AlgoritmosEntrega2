@@ -26,10 +26,11 @@ public class Main {
         juegoDePruebaAnunciarLlegadaAlTotem(s, p);
         juegoDePruebaTerminarConsultaMedicoPaciente(s, p);
         juegoDePruebaCerrarConsulta(s, p);
+        juegoDePruebaConsultasPendientesPaciente(s, p);
         juegoDePruebaHistoriaClinicaPaciente(s, p);
         juegoDePruebaTotalDeResevas(s, p);
         p.imprimirResultadosPrueba();
-        /*s.listarConsultas(122);
+        s.listarConsultas(122);
         System.out.println("");
         s.listarConsultas(152);
         System.out.println("");
@@ -39,7 +40,7 @@ public class Main {
         System.out.println("");
         s.listarConsultas(820);
         System.out.println("");
-        s.listarConsultas(999);*/
+        s.listarConsultas(999);
     }
 
     public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
@@ -173,8 +174,7 @@ public class Main {
     }
 
     public static void juegoDePruebaNoImplementada(Sistema s, Prueba p) {
-        p.ver(s.listarPacientesEnEspera(295, new Date(2021, 2, 15)).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");
-        p.ver(s.consultasPendientesPaciente(53243471).resultado, Retorno.Resultado.ERROR_3, "Funcionalidad no implementada");
+        p.ver(s.listarPacientesEnEspera(295, new Date(2021, 2, 15)).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");        
     }
 
     public static void juegoDePruebaAnunciarLlegadaAlTotem(Sistema s, Prueba p) {
@@ -205,6 +205,13 @@ public class Main {
         p.ver(s.cerrarConsulta(150, new Date(2023 - 1900, 8 - 1, 21)).resultado, Retorno.Resultado.ERROR_2, "No existe esta fecha");
         p.ver(s.cerrarConsulta(777, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Medico");
         p.ver(s.cerrarConsulta(771, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Medico");                                     
+    }
+    
+    public static void juegoDePruebaConsultasPendientesPaciente(Sistema s, Prueba p){
+        p.ver(s.consultasPendientesPaciente(53243000).resultado, Retorno.Resultado.ERROR_1, "No Existe Paciente");
+        p.ver(s.consultasPendientesPaciente(47392203).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
+        p.ver(s.consultasPendientesPaciente(47792203).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
+        p.ver(s.consultasPendientesPaciente(28785574).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
     }
 
     public static void juegoDePruebaHistoriaClinicaPaciente(Sistema s, Prueba p) {

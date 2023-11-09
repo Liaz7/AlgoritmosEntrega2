@@ -210,6 +210,15 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
             mostrarRec(nodo.getSiguiente());
         }
     }
+    
+    public void mostrarConsultasCiRec(NodoLista<Consulta> nodo, int ci) {
+        if (nodo != null) {
+            if (nodo.getDato().getCiPaciente() == ci && nodo.getDato().getEstado().equals("pendiente")) {
+                System.out.println(nodo.getDato());
+            }
+            mostrarConsultasCiRec(nodo.getSiguiente(), ci);
+        }
+    }
 
     public void mostrarConsultasRec(NodoLista<Consulta> nodo, int codMédico) {
         if (nodo != null) {
