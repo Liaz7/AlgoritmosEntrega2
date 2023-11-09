@@ -52,16 +52,18 @@ public class Cola <T extends Comparable<T>> implements ICola<T> {
         this.cantidad = cantidad;
     }
 
-    @Override
     public void encolar(NodoCola nodo) {
-        NodoCola nuevo = new NodoCola((Comparable) nodo);        
-        nuevo.setSig(this.getInicio());
-      
-        this.setInicio(nuevo);
-        if (esVacia()) {
-            fin = inicio;
-        }
+
+    if (esVacia()) {
+        inicio = nodo;
+        fin = nodo;
+        this.setCantidad(1);
+    } else {
+        fin.setSig(nodo);
+        fin = nodo;
+        this.setCantidad(this.getCantidad()+1);
     }
+}
 
     @Override
     public void desencolar() {

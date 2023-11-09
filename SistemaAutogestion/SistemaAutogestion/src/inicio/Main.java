@@ -7,6 +7,7 @@ import sistemaAutogestion.Prueba;
 import java.text.ParseException;
 import Entidades.Medico;
 import Entidades.Paciente;
+import Entidades.Consulta;
 
 public class Main {
 
@@ -15,16 +16,32 @@ public class Main {
         interfaz();
         Sistema s = new Sistema();
         Prueba p = new Prueba();
-        //juegoDePruebaSistemaDeAutogestion(s, p);
-        //juegoDePruebaMedicos(s, p);
-        //juegoDePruebaPacientes(s, p);
-        //juegoDePruebaNoImplementada(s, p);
-        //juegoDePruebaAnunciarLlegadaAlTotem(s, p);                
+        /*juegoDePruebaSistemaDeAutogestion(s, p);
+        juegoDePruebaMedicos(s, p);
+        juegoDePruebaPacientes(s, p);
+        juegoDePruebaNoImplementada(s, p);*/
+        juegoDePruebaConsultas(s, p);
+        juegoDePruebaAnunciarLlegadaAlTotem(s, p);
 
         p.imprimirResultadosPrueba();
     }
 
-    public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
+    public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Ya existe reserva");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(1, 3, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 4, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 5, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 6, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 7, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+
+        p.ver(s.reservaConsulta(2, 2, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        s.listarConsultas(1);
+    }
+
+    /*public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
         p.ver(s.crearSistemaDeAutogestion(15).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
         p.ver(s.crearSistemaDeAutogestion(5).resultado, Retorno.Resultado.OK, "Se crea sistema para 5 pacientes");
         p.ver(s.crearSistemaDeAutogestion(18).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 18 pacientes");
@@ -122,7 +139,8 @@ public class Main {
         p.ver(s.historiaClínicaPaciente(53243471).resultado, Retorno.Resultado.ERROR_4, "Funcionalidad no implementada");
         p.ver(s.reporteDePacientesXFechaYEspecialidad(04, 2010).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
 
-    }
+
+    }*/
 
     public static void juegoDePruebaAnunciarLlegadaAlTotem(Sistema s, Prueba p) {
         p.ver(s.anunciaLlegada(420, 20859902).resultado, Retorno.Resultado.ERROR_2, "No Existe una consulta para este conjunto");

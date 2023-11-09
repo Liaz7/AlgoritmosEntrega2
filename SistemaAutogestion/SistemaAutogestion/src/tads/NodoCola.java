@@ -12,7 +12,6 @@ public class NodoCola <T extends Comparable<T>>{
         this.sig = null;
     }
 
-
     public T getDato() {
         return dato;
     }
