@@ -1,4 +1,5 @@
 package tads;
+
 import Entidades.Consulta;
 
 public class ListaDoble<T extends Comparable<T>> implements IListaDoble<T> {
@@ -91,19 +92,19 @@ public class ListaDoble<T extends Comparable<T>> implements IListaDoble<T> {
     @Override
     public void agregarOrd(T dato) {
         if (this.esVacia()) {
-            this.agregarInicio(dato);            
+            this.agregarInicio(dato);
             this.setIndice(this.getInicio());
             return;
         }
 
         if (this.getInicio().getDato().compareTo(dato) >= 0) {
-            this.agregarInicio(dato);            
+            this.agregarInicio(dato);
             this.setIndice(this.getInicio());
             return;
         }
 
         if (this.getFin().getDato().compareTo(dato) <= 0) {
-            this.agregarFinal(dato);            
+            this.agregarFinal(dato);
             this.setIndice(this.getFin());
             return;
         }
@@ -176,7 +177,7 @@ public class ListaDoble<T extends Comparable<T>> implements IListaDoble<T> {
         }
 
     }
-        
+
     @Override
     public boolean buscarElemento(T dato) {
         if (this.esVacia()) {
@@ -244,6 +245,18 @@ public class ListaDoble<T extends Comparable<T>> implements IListaDoble<T> {
         System.out.println(this.getIndice().getDato() + "");
         this.setIndice(this.getIndice().getSig());
         this.mostrarRec();
+    }
+
+    public void mostrarRecPorCi(NodoDoble<Consulta> aux, int Ci) {
+        if (aux == null) {
+            return;
+        }
+
+        Consulta consulta = aux.getDato();
+        if (consulta.getCiPaciente() == Ci) {
+            System.out.println(consulta + "");
+        }
+        this.mostrarRecPorCi(aux.getSig(), Ci);
     }
 
     public void mostrarRec(NodoDoble aux) {

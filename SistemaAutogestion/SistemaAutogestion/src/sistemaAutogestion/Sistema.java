@@ -197,8 +197,8 @@ public class Sistema implements IObligatorio {
                 if (consultaExistente.getCodMedico() == codMedico && consultaExistente.getCiPaciente() == ciPaciente && fechaConsultaExistente.equals(fechaParametro)) {
                     return new Retorno(Retorno.Resultado.ERROR_1);
                 }
-                
-                if (nodoActual.getDato().getCodMedico() == codMedico && fechaConsultaExistente.equals(fechaParametro) ) {
+
+                if (nodoActual.getDato().getCodMedico() == codMedico && fechaConsultaExistente.equals(fechaParametro)) {
                     numeroConsulta++;
                 }
                 
@@ -271,17 +271,18 @@ public class Sistema implements IObligatorio {
     private boolean existePacientePorCI(int Ci) {
         NodoLista<Paciente> nodoActual = _pacientes.getInicio();
         NodoLista<Paciente> nodoAnterior = null;
+        boolean existe = false;
 
-        while (nodoActual != null) {
+        while (nodoActual != null && !existe) {
             Paciente pacienteExistente = nodoActual.getDato();
             if (pacienteExistente.getCi() == Ci) {
-                return true;
+                existe = true;
             }
             nodoAnterior = nodoActual;
             nodoActual = nodoActual.getSiguiente();
         }
 
-        return false;
+        return existe;
     }
 
     //Pre: El atributo CI no puede ser vacio     
@@ -306,13 +307,12 @@ public class Sistema implements IObligatorio {
         NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoAnterior = null;
         String fechaFormateada = formato.format(fecha);
-        
+
         while (nodoActual != null) {
             Consulta consultaActual = nodoActual.getDato();
             String fechaConsulta = formato.format(consultaActual.getFecha());
-            
-            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico && fechaConsulta.equals(fechaFormateada)) {
 
+            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico && fechaConsulta.equals(fechaFormateada)) {
                 return nodoActual;
             }
 
@@ -372,14 +372,14 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno terminarConsultaMedicoPaciente(int CIPaciente, int codMedico, String detalleDeConsulta) {
-        NodoLista<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(CIPaciente, codMedico, fechaActual);
+        NodoLista<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(codMedico, CIPaciente, fechaActual);
         Consulta consulta = nodoConsulta.getDato();
 
         if (!existePacientePorCI(CIPaciente)) {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
 
-        if (nodoConsulta.getDato().getEstado() == "en espera") {
+        if (nodoConsulta.getDato().getEstado() != "en espera") {
             return new Retorno(Retorno.resultado.ERROR_2);
         }
 
@@ -389,14 +389,16 @@ public class Sistema implements IObligatorio {
         return new Retorno(Retorno.resultado.OK);
     }
 
-    private Lista<Consulta> obtenerConsultasDelDiaPorCodigoDeMedico(int codMedico) {
+    private Lista<Consulta> obtenerConsultasDelDiaPorCodigoDeMedico(int codMedico, Date fechaConsulta) {
         NodoLista<Consulta> nodoConsulta = _consultaPacientes.getInicio();
+        String fechaFormateada = formato.format(fechaConsulta);
         Lista nuevaLista = new Lista();
 
         while (nodoConsulta != null) {
             Consulta consulta = nodoConsulta.getDato();
+            String fechaDeLaConsulta = formato.format(consulta.getFecha());
 
-            if (codMedico == consulta.getCodMedico() && fechaActual == consulta.getFecha()) {
+            if (codMedico == consulta.getCodMedico() && fechaFormateada.equals(fechaDeLaConsulta)) {
                 nuevaLista.agregarInicio(nodoConsulta.getDato());
             }
 
@@ -423,7 +425,7 @@ public class Sistema implements IObligatorio {
         if (nodoMedico == null) {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
-        Lista<Consulta> consultas = obtenerConsultasDelDiaPorCodigoDeMedico(codMedico);
+        Lista<Consulta> consultas = obtenerConsultasDelDiaPorCodigoDeMedico(codMedico, fechaConsulta);
 
         if (consultas.esVacia()) {
             return new Retorno(Retorno.resultado.ERROR_2);
@@ -516,7 +518,7 @@ public class Sistema implements IObligatorio {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
 
-        _historialClinico.mostrarRec();
+        _historialClinico.mostrarRecPorCi(_historialClinico.getInicio(), ci);
         return new Retorno(Retorno.resultado.OK);
     }
 
@@ -542,13 +544,15 @@ public class Sistema implements IObligatorio {
         }
     }
 
-    private int obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(Date fecha, String estado, int esp) {
+    private int obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(Date fecha, String estado, int esp) {        
+        String fechaFormateada = formato.format(fecha);
         NodoDoble<Consulta> aux = _historialClinico.getInicio();
         Consulta consulta = aux.getDato();
         int cantidad = 0;
 
         while (aux != null) {
-            if (consulta.getFecha() == fecha && consulta.getEstado() == estado) {
+            String fechaDeConsulta = formato.format(consulta.getFecha());
+            if (fechaDeConsulta.equals(fechaFormateada) && consulta.getEstado() == estado) {
                 NodoLista<Medico> nodoMedico = obtenerMedicoPorCodigo(consulta.getCodMedico());
                 Medico medico = nodoMedico.getDato();
                 if (medico.getEspecialidad() == esp) {
@@ -563,22 +567,15 @@ public class Sistema implements IObligatorio {
     }
 
     private void agregarCantidadConsultasDentroDeUnaMatriz(int[][] mat, int cantidadDias, int espMax, int mes, int año) {
-        String estado = "cerrada";
-        int especialidad = 0;
-        int dia = 0;
+        String estado = "cerrada";        
 
-        while (dia < cantidadDias && especialidad < espMax) {
-            Date fecha = new Date(año, mes, dia);
-            int cantidadConsultas = obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(fecha, estado, especialidad);
-            mat[dia][especialidad] = cantidadConsultas;
-
-            especialidad++;
-
-            if (especialidad == espMax) {
-                especialidad = 0;
-                dia++;
+        for (int dia = 0; dia < cantidadDias; dia++) {
+            for (int especialidad = 0; especialidad < espMax; especialidad++) {
+                Date fecha = new Date(año - 1900, mes - 1, dia);
+                int cantidadConsultas = obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(fecha, estado, especialidad);
+                mat[dia][especialidad] = cantidadConsultas;
             }
-        }
+        }                                          
 
     }
 
@@ -586,24 +583,19 @@ public class Sistema implements IObligatorio {
         int especialidad = 0;
         int dia = 0;
 
-        while (dia < cantidadDias && especialidad < espMax) {
-            int elemento = mat[dia][especialidad];
-
-            if (dia == 0 && especialidad == 0) {
-                System.out.println("-----Especialidad");
-                System.out.println("Dia " + dia + "-     " + elemento + "     -");
-            } else if (especialidad == 0) {
-                System.out.println("Dia " + dia + "-     " + elemento + "     -");
-            } else {
-                System.out.println("-     " + elemento + "     -");
+        for (int i = 0; i < mat.length; i++) {
+            if(i == 0){
+             System.out.println("---------Especialidad");   
             }
-
-            especialidad++;
-
-            if (especialidad == espMax) {
-                especialidad = 0;
-                dia++;
+            
+            System.out.print("dia: " + i + "\t");                        
+            
+            // Iterar sobre columnas                                    
+            for (int j = especialidad; j < mat[i].length; j++) {
+                System.out.print("-   " + mat[i][j] + "   -" + "\t");
+                // Imprimir elemento seguido de un tabulador
             }
+            System.out.println(""); // Nueva línea después de cada fila
         }
     }
 
