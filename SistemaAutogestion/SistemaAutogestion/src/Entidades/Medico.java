@@ -17,7 +17,7 @@ public class Medico implements Comparable<Medico> {
     private int codMedico;
     private int tel;
     private int especialidad;
-    private List<Date> diasDeConsulta;
+    private List<String> diasDeConsulta;
 
     public String getNombre() {
         return nombre;
@@ -66,7 +66,7 @@ public class Medico implements Comparable<Medico> {
     /**
      * @return the diasDeConsulta
      */
-    public List<Date> getDiasDeConsulta() {
+    public List<String> getDiasDeConsulta() {
         return diasDeConsulta;
     }
 

@@ -8,6 +8,9 @@ import java.text.ParseException;
 import Entidades.Medico;
 import Entidades.Paciente;
 import Entidades.Consulta;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Main {
 
@@ -16,59 +19,54 @@ public class Main {
         interfaz();
         Sistema s = new Sistema();
         Prueba p = new Prueba();
-        /*juegoDePruebaSistemaDeAutogestion(s, p);
+        juegoDePruebaSistemaDeAutogestion(s, p);
         juegoDePruebaMedicos(s, p);
-        juegoDePruebaPacientes(s, p);
-        juegoDePruebaNoImplementada(s, p);*/
+        juegoDePruebaPacientes(s, p);  
         juegoDePruebaConsultas(s, p);
-        //juegoDePruebaAnunciarLlegadaAlTotem(s, p);
+        juegoDePruebaAnunciarLlegadaAlTotem(s, p);
 
         p.imprimirResultadosPrueba();
+    }    
+    
+    public static void juegoDePruebaConsultas(Sistema s, Prueba p) {  
+        Date fechaActual = new Date();               
+        p.ver(s.registrarDiaDeConsulta(122, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.registrarDiaDeConsulta(150, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.registrarDiaDeConsulta(152, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.registrarDiaDeConsulta(159, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.registrarDiaDeConsulta(820, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.registrarDiaDeConsulta(820, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");        
+        p.ver(s.reservaConsulta(150, 49212856, new Date(2023 - 1900, 8 - 1, 21)).resultado, Retorno.Resultado.ERROR_1, "Se crea una consulta");
+        p.ver(s.reservaConsulta(150, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "Ya existe reserva");        
+        p.ver(s.reservaConsulta(4, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(152, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(150, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(159, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(820, 28785574, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(152, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(150, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(159, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(152, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(820, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(150, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(159, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(122, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(820, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(152, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(150, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(820, 41238985, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.listarConsultas(122).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
+        p.ver(s.listarConsultas(152).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
+        p.ver(s.listarConsultas(150).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
+        p.ver(s.listarConsultas(159).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
+        p.ver(s.listarConsultas(820).resultado, Retorno.Resultado.OK, "Se muestran las consultas");                      
     }
 
-    public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
-        p.ver(s.crearSistemaDeAutogestion(2).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
-        p.ver(s.registrarDiaDeConsulta(1,new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.agregarPaciente("Augusto", 1, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Se agrega paciente: Augusto");
-        p.ver(s.agregarPaciente("Augusto", 3, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Se agrega paciente: Augusto");
-        p.ver(s.registrarMedico("Arya", 1, 9581853, 2).resultado, Retorno.Resultado.OK, "Se registra medico: Arya");
-        
-        p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-       
-       // p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Ya existe reserva");
-       // p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
-      //  p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
-        p.ver(s.reservaConsulta(1, 3, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        
-        p.ver(s.reservaConsulta(1, 4, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 5, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.cancelarReserva(1, 1).resultado, Retorno.Resultado.OK, "Se canceló correctamente");
-        p.ver(s.reservaConsulta(1, 6, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 7, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 8, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
-        p.ver(s.reservaConsulta(1, 9, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
-        p.ver(s.reservaConsulta(1, 10, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 11, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 12, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        
-        p.ver(s.reservaConsulta(1, 13, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 14, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 15, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
-        p.ver(s.reservaConsulta(1, 16, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
-        p.ver(s.reservaConsulta(1, 17, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 18, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 19, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 20, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        p.ver(s.reservaConsulta(1, 21, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-
-        p.ver(s.reservaConsulta(2, 2, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
-        
-        s.listarConsultas(1);
-        System.out.println("------------------------------");
-        s.listarPacientesEnEspera(1, new Date(27,04,1998));
-    }
-
-    /*public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
+    public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
         p.ver(s.crearSistemaDeAutogestion(15).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
         p.ver(s.crearSistemaDeAutogestion(5).resultado, Retorno.Resultado.OK, "Se crea sistema para 5 pacientes");
         p.ver(s.crearSistemaDeAutogestion(18).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 18 pacientes");
@@ -167,12 +165,13 @@ public class Main {
         p.ver(s.reporteDePacientesXFechaYEspecialidad(04, 2010).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
 
 
-    }*/
+    }
 
     public static void juegoDePruebaAnunciarLlegadaAlTotem(Sistema s, Prueba p) {
-        p.ver(s.anunciaLlegada(420, 20859902).resultado, Retorno.Resultado.ERROR_2, "No Existe una consulta para este conjunto");
+        p.ver(s.anunciaLlegada(420, 41238985).resultado, Retorno.Resultado.ERROR_2, "No Existe una consulta para este conjunto");
         p.ver(s.anunciaLlegada(420, 20859902).resultado, Retorno.Resultado.ERROR_1, "No Existe una consulta para este paciente.");
-        //Faltan casos de prueba
+        p.ver(s.anunciaLlegada(820, 41238985).resultado, Retorno.Resultado.OK, "Existe una consulta para ese conjunto");               
+        p.ver(s.anunciaLlegada(820, 28785574).resultado, Retorno.Resultado.ERROR_2, "No es el día de la fecha");                       
     }
 
     public static void interfaz() {

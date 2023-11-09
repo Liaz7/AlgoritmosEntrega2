@@ -1,5 +1,6 @@
 package tads;
 
+import Entidades.Consulta;
 import Entidades.Medico;
 import Entidades.Paciente;
 
@@ -7,12 +8,11 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
 
     private NodoLista<T> inicio;
     private NodoLista<T> fin;
-   
 
     public Lista() {
         this.inicio = null;
         this.fin = null;
-        
+
     }
 
     @Override
@@ -63,12 +63,11 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
     @Override
     public void vaciar() {
         this.inicio = null;
-        
+
     }
 
     @Override
     public void agregarInicio(T x) {
-
         NodoLista<T> nuevo = new NodoLista<T>( x);
      
          if (this.esVacia()){
@@ -103,7 +102,7 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
     public void borrarInicio() {
         if (!esVacia()) {
             this.inicio = this.inicio.getSiguiente();
-           
+
         }
     }
 
@@ -121,7 +120,6 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
 
                 }
                 actual.setSiguiente(null);
-                
 
             }
         }
@@ -175,14 +173,21 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
             return null;
         }
     }
-    
-    
 
     @Override
     public void mostrarRec(NodoLista<T> nodo) {
-        if (!nodo.equals(null)) {
-            System.out.println("- " + nodo.getDato());
+        if (nodo != null) {
+            System.out.println(nodo.getDato());
             mostrarRec(nodo.getSiguiente());
+        }
+    }
+
+    public void mostrarConsultasRec(NodoLista<Consulta> nodo, int codMédico) {
+        if (nodo != null) {
+            if (nodo.getDato().getCodMedico() == codMédico) {
+                System.out.println(nodo.getDato());
+            }
+            mostrarConsultasRec(nodo.getSiguiente(), codMédico);
         }
     }
 

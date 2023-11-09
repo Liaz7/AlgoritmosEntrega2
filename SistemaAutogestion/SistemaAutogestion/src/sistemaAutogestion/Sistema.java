@@ -4,6 +4,7 @@ import java.util.Date;
 import Entidades.Medico;
 import Entidades.Paciente;
 import Entidades.Consulta;
+import java.text.SimpleDateFormat;
 import tads.Lista;
 import tads.ListaDoble;
 import tads.NodoLista;
@@ -11,6 +12,7 @@ import tads.NodoDoble;
 
 public class Sistema implements IObligatorio {
 
+    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     public Lista<Medico> _medicos = new Lista();
     public Lista<Paciente> _pacientes = new Lista();
     public Lista<Consulta> _consultaPacientes = new Lista();
@@ -153,51 +155,50 @@ public class Sistema implements IObligatorio {
     }
 
     public Retorno registrarDiaDeConsulta(int codMedico, Date fecha) {
-
+        String fechaFormateada = formato.format(fecha);
         NodoLista<Medico> m = obtenerMedicoPorCodigo(codMedico);
 
         if (m == null) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        if (m.getDato().getDiasDeConsulta().contains(fecha)) {
+        if (m.getDato().getDiasDeConsulta().contains(fechaFormateada)) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
 
-        m.getDato().getDiasDeConsulta().add(fecha);
+        m.getDato().getDiasDeConsulta().add(fechaFormateada);
         return new Retorno(Retorno.Resultado.OK);
     }
 
     public Retorno reservaConsulta(int codMedico, int ciPaciente, Date fecha) {
-
         NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoFinal = _consultaPacientes.getFin();
         NodoLista<Consulta> nodoEspera = _listaDeEsperaPorConsulta.getInicio();
         NodoLista<Medico> medico = obtenerMedicoPorCodigo(codMedico);
-        
+        String fechaParametro = formato.format(fecha);
+
         int numeroConsulta = 1;
 
-       /* if (existePacientePorCI(ciPaciente) == false) {
+        if (existePacientePorCI(ciPaciente) == false) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
         if (existeMedicoPorCodigo(codMedico) == false) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
-        if (!medico.getDato().getDiasDeConsulta().contains(fecha)){
+        if (!medico.getDato().getDiasDeConsulta().contains(fechaParametro)) {
             return new Retorno(Retorno.Resultado.ERROR_4);
-        }*/
-        
-        
+        }
 
-           {
+        {
             while (nodoActual != null) {
 
                 Consulta consultaExistente = nodoActual.getDato();
+                String fechaConsultaExistente = formato.format(consultaExistente.getFecha());
 
-                if (consultaExistente.getCodMedico() == codMedico && consultaExistente.getCiPaciente() == ciPaciente && consultaExistente.getFecha().equals(fecha)) {
+                if (consultaExistente.getCodMedico() == codMedico && consultaExistente.getCiPaciente() == ciPaciente && fechaConsultaExistente.equals(fechaParametro)) {
                     return new Retorno(Retorno.Resultado.ERROR_1);
                 }
-
-                if (nodoActual.getDato().getCodMedico() == codMedico) {
+                
+                if (nodoActual.getDato().getCodMedico() == codMedico && fechaConsultaExistente.equals(fechaParametro) ) {
                     numeroConsulta++;
                 }
                 
@@ -218,9 +219,9 @@ public class Sistema implements IObligatorio {
         }
 
         Consulta c = new Consulta(codMedico, ciPaciente, fecha, numeroConsulta, "pendiente");
-        NodoLista<Consulta> nodoLista = new NodoLista<>(c); 
-        
-        if (_consultaPacientes.esVacia()) {                                   
+        NodoLista<Consulta> nodoLista = new NodoLista<>(c);
+
+        if (_consultaPacientes.esVacia()) {
             _consultaPacientes.agregarInicio(nodoLista.getDato());
         } else if (numeroConsulta > maximoPacientes) {
             _listaDeEsperaPorConsulta.agregarInicio(nodoLista.getDato());
@@ -304,11 +305,13 @@ public class Sistema implements IObligatorio {
     private NodoLista<Consulta> existePacienteConCunsultaDadaUnaFecha(int codMedico, int CIPaciente, Date fecha) {
         NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoAnterior = null;
-
+        String fechaFormateada = formato.format(fecha);
+        
         while (nodoActual != null) {
             Consulta consultaActual = nodoActual.getDato();
-
-            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico && consultaActual.getFecha() == fecha) {
+            String fechaConsulta = formato.format(consultaActual.getFecha());
+            
+            if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico && fechaConsulta.equals(fechaFormateada)) {
 
                 return nodoActual;
             }
@@ -359,7 +362,8 @@ public class Sistema implements IObligatorio {
             NodoLista<Medico> nodoMedico = obtenerMedicoPorCodigo(consulta.getCodMedico());
             Medico medico = nodoMedico.getDato();
             System.out.println("Tienes una consulta con el Medico: " + medico.getNombre());
-            System.out.println("Su número de consulta es: " + consulta.getNumero());
+            System.out.println("Tu número de consulta es: " + consulta.getNumero());
+            System.out.println("");
         }
 
         return new Retorno(Retorno.resultado.OK);
@@ -469,24 +473,9 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno listarConsultas(int codMédico
-    ) {
-        Lista<Consulta> consultas = _consultaPacientes;
-        Lista<Consulta> consultasOrdenadas = new Lista();        
-        NodoLista<Consulta> aux = consultas.getInicio();
-        consultasOrdenadas.mostrar();
-        if (!consultas.esVacia()) {
-            while (aux != null) {
-                Consulta consulta = aux.getDato();
-
-                if (consulta.getCodMedico() == codMédico) {
-                    consultasOrdenadas.agregarInicio(consulta);
-                }
-
-                aux = aux.getSiguiente();
-            }
-            consultasOrdenadas.mostrar();
-
+    public Retorno listarConsultas(int codMédico) {
+        if (!_consultaPacientes.esVacia()) {
+            _consultaPacientes.mostrarConsultasRec(_consultaPacientes.getInicio(), codMédico);
         }
         return new Retorno(Retorno.resultado.OK);
     }
