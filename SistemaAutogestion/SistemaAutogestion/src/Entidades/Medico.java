@@ -1,4 +1,7 @@
 package Entidades;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Medico implements Comparable<Medico> {
 
@@ -7,11 +10,14 @@ public class Medico implements Comparable<Medico> {
         this.codMedico = codMedico;
         this.tel = tel;
         this.especialidad = especialidad;
+        this.diasDeConsulta = new ArrayList<>();
+        
     }
     private String nombre;
     private int codMedico;
     private int tel;
     private int especialidad;
+    private List<Date> diasDeConsulta;
 
     public String getNombre() {
         return nombre;
@@ -57,4 +63,12 @@ public class Medico implements Comparable<Medico> {
         return "Medico{" + "nombre=" + nombre + ", codMedico=" + codMedico + ", tel=" + tel + ", especialidad=" + especialidad + '}';
     }
 
+    /**
+     * @return the diasDeConsulta
+     */
+    public List<Date> getDiasDeConsulta() {
+        return diasDeConsulta;
+    }
+
+   
 }
