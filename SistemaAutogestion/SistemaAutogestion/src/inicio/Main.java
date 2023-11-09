@@ -23,7 +23,6 @@ public class Main {
         juegoDePruebaConsultas(s, p);
         juegoDePruebaAnunciarLlegadaAlTotem(s, p);
 
-
         p.imprimirResultadosPrueba();
     }
 
