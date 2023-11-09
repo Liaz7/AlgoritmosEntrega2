@@ -7,16 +7,14 @@ import Entidades.Consulta;
 import tads.Lista;
 import tads.ListaDoble;
 import tads.NodoLista;
-import tads.Cola;
-import tads.NodoCola;
 import tads.NodoDoble;
 
 public class Sistema implements IObligatorio {
 
     public Lista<Medico> _medicos = new Lista();
     public Lista<Paciente> _pacientes = new Lista();
-    public Cola<Consulta> _consultaPacientes = new Cola();
-    public Cola<Consulta> _listaDeEsperaPorConsulta = new Cola();
+    public Lista<Consulta> _consultaPacientes = new Lista();
+    public Lista<Consulta> _listaDeEsperaPorConsulta = new Lista();
     public ListaDoble<Consulta> _historialClinico = new ListaDoble();
     Date fechaActual = new Date();
     int maximoPacientes = 0;
@@ -171,8 +169,8 @@ public class Sistema implements IObligatorio {
 
     public Retorno reservaConsulta(int codMedico, int ciPaciente, Date fecha) {
 
-        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
-        NodoCola<Consulta> nodoFinal = _consultaPacientes.getFin();
+        NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
+        NodoLista<Consulta> nodoFinal = _consultaPacientes.getFin();
         NodoLista<Medico> medico = obtenerMedicoPorCodigo(codMedico);
         
         int numeroConsulta = 1;
@@ -202,20 +200,20 @@ public class Sistema implements IObligatorio {
                     numeroConsulta++;
                 }
 
-                nodoActual = nodoActual.getSig();
+                nodoActual = nodoActual.getSiguiente();
 
             }
         }
 
         Consulta c = new Consulta(codMedico, ciPaciente, fecha, numeroConsulta, "pendiente");
-
-        if (_consultaPacientes.esVacia()) {
-            NodoCola nodoCola = new NodoCola<>(c);
-            _consultaPacientes.encolar(nodoCola);
+        NodoLista<Consulta> nodoLista = new NodoLista<>(c); 
+        
+        if (_consultaPacientes.esVacia()) {                                   
+            _consultaPacientes.agregarInicio(nodoLista.getDato());
         } else if (numeroConsulta >= maximoPacientes) {
-            _listaDeEsperaPorConsulta.encolar(new NodoCola<>(c));
+            _listaDeEsperaPorConsulta.agregarInicio(nodoLista.getDato());
         } else {
-            _consultaPacientes.encolar(new NodoCola<>(c));
+            _consultaPacientes.agregarInicio(nodoLista.getDato());
         }
 
         return new Retorno(Retorno.Resultado.OK);
@@ -262,9 +260,9 @@ public class Sistema implements IObligatorio {
         return false;
     }
 
-    private NodoCola<Consulta> existePacienteConCunsultaDadaUnaFecha(int codMedico, int CIPaciente, Date fecha) {
-        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
-        NodoCola<Consulta> nodoAnterior = null;
+    private NodoLista<Consulta> existePacienteConCunsultaDadaUnaFecha(int codMedico, int CIPaciente, Date fecha) {
+        NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
+        NodoLista<Consulta> nodoAnterior = null;
 
         while (nodoActual != null) {
             Consulta consultaActual = nodoActual.getDato();
@@ -275,7 +273,7 @@ public class Sistema implements IObligatorio {
             }
 
             nodoAnterior = nodoActual;
-            nodoActual = nodoActual.getSig();
+            nodoActual = nodoActual.getSiguiente();
         }
 
         return nodoActual;
@@ -284,8 +282,8 @@ public class Sistema implements IObligatorio {
     //Pre: codMedico y CIPaciente no son nulos y son ambos de tipo int
     //Post: Devuelve true existe una cosnulta para el paciente:CIPaciente con el medico:codMedico
     private boolean existePacienteConConsultas(int codMedico, int CIPaciente) {
-        NodoCola<Consulta> nodoActual = _consultaPacientes.getInicio();
-        NodoCola<Consulta> nodoAnterior = null;
+        NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
+        NodoLista<Consulta> nodoAnterior = null;
 
         while (nodoActual != null) {
             Consulta consultaActual = nodoActual.getDato();
@@ -294,7 +292,7 @@ public class Sistema implements IObligatorio {
             }
 
             nodoAnterior = nodoActual;
-            nodoActual = nodoActual.getSig();
+            nodoActual = nodoActual.getSiguiente();
         }
 
         return false;
@@ -302,10 +300,9 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno anunciaLlegada(int codMedico, int CIPaciente) {
-
         Date fechaActual = new Date();
 
-        NodoCola<Consulta> NodoPaciente = existePacienteConCunsultaDadaUnaFecha(codMedico, CIPaciente, fechaActual);
+        NodoLista<Consulta> NodoPaciente = existePacienteConCunsultaDadaUnaFecha(codMedico, CIPaciente, fechaActual);
 
         if (!existePacientePorCI(CIPaciente)) {
             return new Retorno(Retorno.resultado.ERROR_1);
@@ -330,7 +327,7 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno terminarConsultaMedicoPaciente(int CIPaciente, int codMedico, String detalleDeConsulta) {
-        NodoCola<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(CIPaciente, codMedico, fechaActual);
+        NodoLista<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(CIPaciente, codMedico, fechaActual);
         Consulta consulta = nodoConsulta.getDato();
 
         if (!existePacientePorCI(CIPaciente)) {
@@ -347,30 +344,30 @@ public class Sistema implements IObligatorio {
         return new Retorno(Retorno.resultado.OK);
     }
 
-    private Cola<Consulta> obtenerConsultasDelDiaPorCodigoDeMedico(int codMedico) {
-        NodoCola<Consulta> nodoConsulta = _consultaPacientes.getInicio();
-        Cola nuevaCola = new Cola();
+    private Lista<Consulta> obtenerConsultasDelDiaPorCodigoDeMedico(int codMedico) {
+        NodoLista<Consulta> nodoConsulta = _consultaPacientes.getInicio();
+        Lista nuevaLista = new Lista();
 
         while (nodoConsulta != null) {
             Consulta consulta = nodoConsulta.getDato();
 
             if (codMedico == consulta.getCodMedico() && fechaActual == consulta.getFecha()) {
-                nuevaCola.encolar(nodoConsulta);
+                nuevaLista.agregarInicio(nodoConsulta.getDato());
             }
 
-            nodoConsulta = nodoConsulta.getSig();
+            nodoConsulta = nodoConsulta.getSiguiente();
         }
 
-        return nuevaCola;
+        return nuevaLista;
     }
 
-    private void agregarConsultasDePacienteAlHistorialClinico(Cola<Consulta> consultas) {
+    private void agregarConsultasDePacienteAlHistorialClinico(Lista<Consulta> consultas) {
         while (!consultas.esVacia()) {
-            NodoCola<Consulta> nodoConsulta = consultas.frente();
+            NodoLista<Consulta> nodoConsulta = consultas.getInicio();
             Consulta consulta = nodoConsulta.getDato();
             consulta.setEstado("no asistió");
             _historialClinico.agregarOrd(consulta);
-            consultas.desencolar();
+            consultas.borrarInicio();
         }
     }
 
@@ -381,7 +378,7 @@ public class Sistema implements IObligatorio {
         if (nodoMedico == null) {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
-        Cola<Consulta> consultas = obtenerConsultasDelDiaPorCodigoDeMedico(codMedico);
+        Lista<Consulta> consultas = obtenerConsultasDelDiaPorCodigoDeMedico(codMedico);
 
         if (consultas.esVacia()) {
             return new Retorno(Retorno.resultado.ERROR_2);
@@ -433,22 +430,21 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno listarConsultas(int codMédico
     ) {
-        Cola<Consulta> consultas = _consultaPacientes;
-
-        Cola<Consulta> consultasOrdenadas = new Cola();
-        NodoCola<Consulta> aux = consultas.getInicio();
-        consultasOrdenadas.mostrarCola();
+        Lista<Consulta> consultas = _consultaPacientes;
+        Lista<Consulta> consultasOrdenadas = new Lista();        
+        NodoLista<Consulta> aux = consultas.getInicio();
+        consultasOrdenadas.mostrar();
         if (!consultas.esVacia()) {
             while (aux != null) {
                 Consulta consulta = aux.getDato();
 
                 if (consulta.getCodMedico() == codMédico) {
-                    consultasOrdenadas.encolar(aux);
+                    consultasOrdenadas.agregarInicio(consulta);
                 }
 
-                aux = aux.getSig();
+                aux = aux.getSiguiente();
             }
-            consultasOrdenadas.mostrarCola();
+            consultasOrdenadas.mostrar();
 
         }
         return new Retorno(Retorno.resultado.OK);
@@ -457,22 +453,22 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno listarPacientesEnEspera(int codMédico, Date fecha
     ) {
-        Cola<Consulta> consultas = _listaDeEsperaPorConsulta;
+        Lista<Consulta> consultas = _listaDeEsperaPorConsulta;
 
-        Cola<Consulta> consultasOrdenadas = new Cola();
-        NodoCola<Consulta> aux = consultas.getInicio();
-        consultasOrdenadas.mostrarCola();
+        Lista<Consulta> consultasOrdenadas = new Lista();
+        NodoLista<Consulta> aux = consultas.getInicio();
+        consultasOrdenadas.mostrar();
         if (!consultas.esVacia()) {
             while (aux != null) {
                 Consulta consulta = aux.getDato();
 
                 if (consulta.getCodMedico() == codMédico && consulta.getFecha().equals(fecha)) {
-                    consultasOrdenadas.encolar(aux);
+                    consultasOrdenadas.agregarInicio(consulta);
                 }
 
-                aux = aux.getSig();
+                aux = aux.getSiguiente();
             }
-            consultasOrdenadas.mostrarCola();
+            consultasOrdenadas.mostrar();
 
         }
         return new Retorno(Retorno.resultado.OK);
