@@ -21,12 +21,18 @@ public class Main {
         juegoDePruebaPacientes(s, p);
         juegoDePruebaNoImplementada(s, p);*/
         juegoDePruebaConsultas(s, p);
-        juegoDePruebaAnunciarLlegadaAlTotem(s, p);
+        //juegoDePruebaAnunciarLlegadaAlTotem(s, p);
 
         p.imprimirResultadosPrueba();
     }
 
     public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
+        p.ver(s.crearSistemaDeAutogestion(3).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
+        p.ver(s.registrarDiaDeConsulta(1,new Date(27,04,1998)).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
+        p.ver(s.agregarPaciente("Augusto", 1, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Se agrega paciente: Augusto");
+        p.ver(s.agregarPaciente("Augusto", 3, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Se agrega paciente: Augusto");
+        p.ver(s.registrarMedico("Arya", 1, 9581853, 2).resultado, Retorno.Resultado.OK, "Se registra medico: Arya");
+        
         p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
         p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Ya existe reserva");
         p.ver(s.reservaConsulta(1, 1, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
@@ -36,9 +42,26 @@ public class Main {
         p.ver(s.reservaConsulta(1, 5, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
         p.ver(s.reservaConsulta(1, 6, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
         p.ver(s.reservaConsulta(1, 7, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 8, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(1, 9, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(1, 10, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 11, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 12, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 13, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 14, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 15, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe paciente");
+        p.ver(s.reservaConsulta(1, 16, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(1, 17, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 18, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 19, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 20, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        p.ver(s.reservaConsulta(1, 21, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
 
         p.ver(s.reservaConsulta(2, 2, new Date(27, 04, 1998)).resultado, Retorno.Resultado.OK, "Se crea broder");
+        
         s.listarConsultas(1);
+        System.out.println("------------------------------");
+        s.listarPacientesEnEspera(1, new Date(27,04,1998));
     }
 
     /*public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
