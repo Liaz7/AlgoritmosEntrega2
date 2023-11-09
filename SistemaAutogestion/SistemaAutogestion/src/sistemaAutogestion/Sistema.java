@@ -171,6 +171,7 @@ public class Sistema implements IObligatorio {
 
         NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoFinal = _consultaPacientes.getFin();
+        NodoLista<Consulta> nodoEspera = _listaDeEsperaPorConsulta.getInicio();
         NodoLista<Medico> medico = obtenerMedicoPorCodigo(codMedico);
         
         int numeroConsulta = 1;
@@ -199,10 +200,21 @@ public class Sistema implements IObligatorio {
                 if (nodoActual.getDato().getCodMedico() == codMedico) {
                     numeroConsulta++;
                 }
+                
+                
 
                 nodoActual = nodoActual.getSiguiente();
+                
+              
 
             }
+            while (nodoEspera !=null){
+                numeroConsulta++;
+                nodoEspera = nodoEspera.getSiguiente();
+            }
+            
+            
+          
         }
 
         Consulta c = new Consulta(codMedico, ciPaciente, fecha, numeroConsulta, "pendiente");
@@ -210,8 +222,9 @@ public class Sistema implements IObligatorio {
         
         if (_consultaPacientes.esVacia()) {                                   
             _consultaPacientes.agregarInicio(nodoLista.getDato());
-        } else if (numeroConsulta >= maximoPacientes) {
+        } else if (numeroConsulta > maximoPacientes) {
             _listaDeEsperaPorConsulta.agregarInicio(nodoLista.getDato());
+           
         } else {
             _consultaPacientes.agregarInicio(nodoLista.getDato());
         }
@@ -221,7 +234,35 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno cancelarReserva(int codMedico, int ciPaciente) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+        NodoLista<Consulta> nodoConsulta = _consultaPacientes.getInicio();
+        NodoLista<Consulta> nodoEnEspera = _listaDeEsperaPorConsulta.getInicio();
+        NodoLista<Consulta> nodoAnterior = null;
+        
+        if(_consultaPacientes.esVacia()){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        
+        while(nodoConsulta != null){
+            
+            if(nodoConsulta.getDato().getCodMedico() == codMedico && nodoConsulta.getDato().getCiPaciente() == ciPaciente && nodoConsulta.getDato().getEstado().equals("pendiente")){
+                _consultaPacientes.borrarElemento(nodoConsulta);                            
+              //  nodoAnterior.setSiguiente(nodoEnEspera);               
+              //  _listaDeEsperaPorConsulta.setInicio(nodoEnEspera.getSiguiente()); 
+              //  nodoEnEspera.getDato().setNumero(nodoConsulta.getDato().getNumero());
+                
+                return new Retorno(Retorno.Resultado.OK);
+            }
+            nodoAnterior = nodoConsulta;
+            nodoConsulta = nodoConsulta.getSiguiente();
+        }
+        
+         if (nodoAnterior.getSiguiente() == null) {
+            _consultaPacientes.borrarElemento(nodoAnterior);
+            return new Retorno(Retorno.Resultado.OK);
+        }
+
+        return new Retorno(Retorno.Resultado.ERROR_1);
+        
     }
 
     //Pre: El atributo CI no puede ser vacio     
