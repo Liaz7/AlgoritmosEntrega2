@@ -66,6 +66,10 @@ public class Sistema implements IObligatorio {
     public Retorno eliminarMedico(int codMedico) {
         NodoLista<Medico> nodoActual = _medicos.getInicio();
         NodoLista<Medico> nodoAnterior = null;
+        
+        if(codMedico <= 0){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
 
         while (nodoActual != null) {
             Medico medicoExistente = nodoActual.getDato();
@@ -241,12 +245,12 @@ public class Sistema implements IObligatorio {
         if (_listaDeEsperaPorConsulta.esVacia() && nodoConsultaExistente != null) {
             Consulta consulta = nodoConsultaExistente.getDato();
             if (consulta.getEstado().equals("pendiente")) {
-                _consultaPacientes.borrarElemento(nodoConsultaExistente);                
+                _consultaPacientes.borrarElemento(nodoConsultaExistente);
             }
         } else if (!_listaDeEsperaPorConsulta.esVacia()) {
             nodoEnEspera.getDato().setNumero(nodoConsultaExistente.getDato().getNumero());
             _consultaPacientes.reemplazarNodo(nodoConsultaExistente, nodoEnEspera);
-        }       
+        }
 
         return new Retorno(Retorno.Resultado.OK);
     }
@@ -356,13 +360,13 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno terminarConsultaMedicoPaciente(int CIPaciente, int codMedico, String detalleDeConsulta) {
-        NodoLista<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(codMedico, CIPaciente, fechaActual);
-        Consulta consulta = nodoConsulta.getDato();
-
+    public Retorno terminarConsultaMedicoPaciente(int CIPaciente, int codMedico, String detalleDeConsulta) {                
         if (!existePacientePorCI(CIPaciente)) {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
+        
+        NodoLista<Consulta> nodoConsulta = existePacienteConCunsultaDadaUnaFecha(codMedico, CIPaciente, fechaActual);
+        Consulta consulta = nodoConsulta.getDato();
 
         if (nodoConsulta.getDato().getEstado() != "en espera") {
             return new Retorno(Retorno.resultado.ERROR_2);

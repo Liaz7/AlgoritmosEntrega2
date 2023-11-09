@@ -6,7 +6,7 @@ public class NodoLista<T extends Comparable<T>>{
     private T dato;
     private NodoLista<T> sig;
 
-    //Constructor
+    //Constructor 
     public NodoLista(T n){
         this.dato=n;
         this.sig=null;
