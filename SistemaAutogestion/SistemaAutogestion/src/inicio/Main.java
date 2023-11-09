@@ -24,7 +24,10 @@ public class Main {
         juegoDePruebaPacientes(s, p);  
         juegoDePruebaConsultas(s, p);
         juegoDePruebaAnunciarLlegadaAlTotem(s, p);
-
+        juegoDePruebaTerminarConsultaMedicoPaciente(s, p);
+        juegoDePruebaCerrarConsulta(s, p);
+        juegoDePruebaHistoriaClinicaPaciente(s,p);
+        juegoDePruebaTotalDeResevas(s,p);
         p.imprimirResultadosPrueba();
     }    
     
@@ -90,7 +93,7 @@ public class Main {
         Medico medicoUno = new Medico("Pepe", 152, 9518351, 2);
         Medico medicoDos = new Medico("carlos", 152, 9518351, 2); // Se ingresa con la inicial minuscula para comprobar el compareTo()
         p.ver(s.registrarMedico("Abrya", -502, 9581853, 2).resultado, Retorno.Resultado.ERROR_2, "Codigo de medico en negativo");
-        p.ver(s.registrarMedico("Baltimor", 150, 9581853, 16).resultado, Retorno.Resultado.ERROR_4, "Especialidad fuera de rango");
+        p.ver(s.registrarMedico("Baltimor", 150, 9581853, 30).resultado, Retorno.Resultado.ERROR_4, "Especialidad fuera de rango");
         p.ver(s.registrarMedico("Aarya", 501, -9581853, 2).resultado, Retorno.Resultado.ERROR_2, "Telefono fuera de rango");
         System.out.println("====================  Se Muestra Lista Medicos  ========================");
         s._medicos.mostrar();
@@ -151,27 +154,34 @@ public class Main {
         p.ver(s.listarPacientes().resultado, Retorno.Resultado.OK, "Se logro listar los pacientes exitosamente");                        
     }
 
-    public static void juegoDePruebaNoImplementada(Sistema s, Prueba p) {
-        p.ver(s.reservaConsulta(420, 53243471, new Date(1998, 3, 28)).resultado, Retorno.Resultado.OK, "Funcionalidad no implementada");
-        p.ver(s.cancelarReserva(520, 53243471).resultado, Retorno.Resultado.ERROR_1, "Funcionalidad no implementada");
-        p.ver(s.anunciaLlegada(520, 53243471).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");
-        p.ver(s.terminarConsultaMedicoPaciente(520, 53243471, "risa cronica").resultado, Retorno.Resultado.ERROR_4, "Funcionalidad no implementada");
-        p.ver(s.cerrarConsulta(520, new Date(1998, 3, 28)).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
-
-        p.ver(s.listarConsultas(282).resultado, Retorno.Resultado.ERROR_1, "Funcionalidad no implementada");
+    public static void juegoDePruebaNoImplementada(Sistema s, Prueba p) {                                
         p.ver(s.listarPacientesEnEspera(295, new Date(2021, 2, 15)).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");
-        p.ver(s.consultasPendientesPaciente(53243471).resultado, Retorno.Resultado.ERROR_3, "Funcionalidad no implementada");
-        p.ver(s.historiaClínicaPaciente(53243471).resultado, Retorno.Resultado.ERROR_4, "Funcionalidad no implementada");
-        p.ver(s.reporteDePacientesXFechaYEspecialidad(04, 2010).resultado, Retorno.Resultado.ERROR_5, "Funcionalidad no implementada");
-
-
+        p.ver(s.consultasPendientesPaciente(53243471).resultado, Retorno.Resultado.ERROR_3, "Funcionalidad no implementada");                
     }
 
     public static void juegoDePruebaAnunciarLlegadaAlTotem(Sistema s, Prueba p) {
         p.ver(s.anunciaLlegada(420, 41238985).resultado, Retorno.Resultado.ERROR_2, "No Existe una consulta para este conjunto");
         p.ver(s.anunciaLlegada(420, 20859902).resultado, Retorno.Resultado.ERROR_1, "No Existe una consulta para este paciente.");
         p.ver(s.anunciaLlegada(820, 41238985).resultado, Retorno.Resultado.OK, "Existe una consulta para ese conjunto");               
-        p.ver(s.anunciaLlegada(820, 28785574).resultado, Retorno.Resultado.ERROR_2, "No es el día de la fecha");                       
+        p.ver(s.anunciaLlegada(820, 28785574).resultado, Retorno.Resultado.ERROR_2, "No es el día de la fecha");         
+        p.ver(s.anunciaLlegada(150, 28785574).resultado, Retorno.Resultado.OK, "Existe una consulta para ese conjunto"); 
+    }
+    
+    public static void juegoDePruebaTerminarConsultaMedicoPaciente(Sistema s, Prueba p){
+        p.ver(s.terminarConsultaMedicoPaciente(41238985, 820, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.OK, "Se termina la consulta efectivamente");
+    }
+    
+    public static void juegoDePruebaCerrarConsulta(Sistema s, Prueba p){
+        Date fechaActual = new Date();
+        p.ver(s.cerrarConsulta(150, fechaActual).resultado, Retorno.Resultado.OK, "Se pudo cerrar la consulta");
+    }
+    
+    public static void juegoDePruebaHistoriaClinicaPaciente(Sistema s, Prueba p){
+        p.ver(s.historiaClínicaPaciente(28785574).resultado, Retorno.Resultado.OK, "Se mostró el historial clinico");
+    }
+    
+    public static void juegoDePruebaTotalDeResevas(Sistema s, Prueba p){
+        p.ver(s.reporteDePacientesXFechaYEspecialidad(11, 2023).resultado, Retorno.Resultado.OK, "Se mostró el reporte correctamente");
     }
 
     public static void interfaz() {
