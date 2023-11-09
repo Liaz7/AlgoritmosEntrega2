@@ -33,35 +33,36 @@ public class Main {
     
     public static void juegoDePruebaConsultas(Sistema s, Prueba p) {  
         Date fechaActual = new Date();               
-        p.ver(s.registrarDiaDeConsulta(122, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.registrarDiaDeConsulta(150, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.registrarDiaDeConsulta(152, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.registrarDiaDeConsulta(159, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.registrarDiaDeConsulta(820, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");
-        p.ver(s.registrarDiaDeConsulta(820, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta ");        
-        p.ver(s.reservaConsulta(150, 49212856, new Date(2023 - 1900, 8 - 1, 21)).resultado, Retorno.Resultado.ERROR_1, "Se crea una consulta");
+        p.ver(s.registrarDiaDeConsulta(122, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 1");
+        p.ver(s.registrarDiaDeConsulta(150, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 2");
+        p.ver(s.registrarDiaDeConsulta(152, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 3");
+        p.ver(s.registrarDiaDeConsulta(159, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No se pudo registrar día para Medico no existente");
+        p.ver(s.registrarDiaDeConsulta(820, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 5");
+        p.ver(s.registrarDiaDeConsulta(999, fechaActual).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 5");        
+        p.ver(s.registrarDiaDeConsulta(820, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se registra el dia de consulta 6");        
+        p.ver(s.reservaConsulta(150, 49212856, new Date(2023 - 1900, 8 - 1, 21)).resultado, Retorno.Resultado.ERROR_4, "No se pudo crear una consulta para un día no registrado");
         p.ver(s.reservaConsulta(150, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "Ya existe reserva");        
-        p.ver(s.reservaConsulta(4, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
+        p.ver(s.reservaConsulta(4, 49212856, fechaActual).resultado, Retorno.Resultado.ERROR_2, "No existe medico");
         p.ver(s.reservaConsulta(152, 49212856, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
         p.ver(s.reservaConsulta(150, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(159, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(159, 47792203, fechaActual).resultado, Retorno.Resultado.ERROR_2, "No existe Medico");
         p.ver(s.reservaConsulta(122, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
         p.ver(s.reservaConsulta(820, 28785574, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(152, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "No existe paciente");
-        p.ver(s.reservaConsulta(150, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
-        p.ver(s.reservaConsulta(159, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(122, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(152, 44457483, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(820, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(150, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(159, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "No existe paciente");
-        p.ver(s.reservaConsulta(122, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "No existe medico");
-        p.ver(s.reservaConsulta(820, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(152, 56563329, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(152, 28785574, fechaActual).resultado, Retorno.Resultado.OK, "No existe Paciente");
+        p.ver(s.reservaConsulta(150, 44457483, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Paciente");
+        p.ver(s.reservaConsulta(999, 47192203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 47592203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");        
+        p.ver(s.reservaConsulta(999, 47792203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");        
+        p.ver(s.reservaConsulta(820, 56563329, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Paciente");        
+        p.ver(s.reservaConsulta(150, 47492203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");        
+        p.ver(s.reservaConsulta(159, 47192203, fechaActual).resultado, Retorno.Resultado.ERROR_2, "No existe Medico");
+        p.ver(s.reservaConsulta(122, 56563000, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Paciente");        
+        p.ver(s.reservaConsulta(820, 47392203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(152, 47292203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");        
         p.ver(s.reservaConsulta(150, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(122, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(820, 41238985, new Date(2023 - 1900,11 -1 ,15)).resultado, Retorno.Resultado.OK, "Se crea una consulta");
-        p.ver(s.reservaConsulta(122, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 47292203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(820, 41238985, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
+        p.ver(s.reservaConsulta(122, 47392203, fechaActual).resultado, Retorno.Resultado.OK, "Se crea una consulta");
         p.ver(s.listarConsultas(122).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
         p.ver(s.listarConsultas(152).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
         p.ver(s.listarConsultas(150).resultado, Retorno.Resultado.OK, "Se muestran las consultas");
@@ -70,15 +71,15 @@ public class Main {
     }
 
     public static void juegoDePruebaSistemaDeAutogestion(Sistema s, Prueba p) {
-        p.ver(s.crearSistemaDeAutogestion(15).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 15 pacientes");
+        p.ver(s.crearSistemaDeAutogestion(15).resultado, Retorno.Resultado.OK, "Se crea sistema para 15 pacientes");
         p.ver(s.crearSistemaDeAutogestion(5).resultado, Retorno.Resultado.OK, "Se crea sistema para 5 pacientes");
         p.ver(s.crearSistemaDeAutogestion(18).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 18 pacientes");
-        p.ver(s.crearSistemaDeAutogestion(24).resultado, Retorno.Resultado.OK, "Se crea sistema para 24 pacientes");
+        p.ver(s.crearSistemaDeAutogestion(24).resultado, Retorno.Resultado.ERROR_1, "Se crea sistema para 24 pacientes");
     }
 
     public static void juegoDePruebaMedicos(Sistema s, Prueba p) {
         p.ver(s.registrarMedico("Arya", 500, 9581853, 2).resultado, Retorno.Resultado.OK, "Se registra medico: Arya");
-        p.ver(s.registrarMedico("Gabodoc", 420, 9581853, 21).resultado, Retorno.Resultado.ERROR_4, "Especialidad fuera de rango");        
+        p.ver(s.registrarMedico("Gabodoc", 420, 9581853, 21).resultado, Retorno.Resultado.ERROR_2, "Especialidad fuera de rango");        
         p.ver(s.listarMédicos().resultado, Retorno.Resultado.OK, "Se logro listar los medicos exitosamente");
         p.ver(s.registrarMedico("Abrya", 502, 9581853, 2).resultado, Retorno.Resultado.OK, "Se registra medico: Arya");
         p.ver(s.registrarMedico("Baltimor", 150, 9581853, 15).resultado, Retorno.Resultado.OK, "Se registra medico: Baltimor");
@@ -90,11 +91,11 @@ public class Main {
         p.ver(s.registrarMedico("Jon", 820, 9581853, 15).resultado, Retorno.Resultado.OK, "Se registra medico: Jon");
         p.ver(s.registrarMedico("Ned", 920, 9581853, 15).resultado, Retorno.Resultado.OK, "Se registra medico: Ned");
         p.ver(s.registrarMedico("Oberyn", 777, 9581853, 15).resultado, Retorno.Resultado.OK, "Se registra medico: Oberyn");
-        Medico medicoUno = new Medico("Pepe", 152, 9518351, 2);
+        Medico medicoUno = new Medico("Pepe", 150, 9518351, 2);
         Medico medicoDos = new Medico("carlos", 152, 9518351, 2); // Se ingresa con la inicial minuscula para comprobar el compareTo()
-        p.ver(s.registrarMedico("Abrya", -502, 9581853, 2).resultado, Retorno.Resultado.ERROR_2, "Codigo de medico en negativo");
-        p.ver(s.registrarMedico("Baltimor", 150, 9581853, 30).resultado, Retorno.Resultado.ERROR_4, "Especialidad fuera de rango");
-        p.ver(s.registrarMedico("Aarya", 501, -9581853, 2).resultado, Retorno.Resultado.ERROR_2, "Telefono fuera de rango");
+        p.ver(s.registrarMedico("Abrya", -502, 9581853, 2).resultado, Retorno.Resultado.ERROR_4, "Codigo de medico en negativo");
+        p.ver(s.registrarMedico("Baltimor", 150, 9581853, 30).resultado, Retorno.Resultado.ERROR_2, "Especialidad fuera de rango");
+        p.ver(s.registrarMedico("Aarya", 501, -9581853, 2).resultado, Retorno.Resultado.ERROR_4, "Telefono fuera de rango");
         System.out.println("====================  Se Muestra Lista Medicos  ========================");
         s._medicos.mostrar();
         p.ver(s.eliminarMedico(920).resultado, Retorno.Resultado.OK, "Se elimina medico: Ned");
@@ -118,12 +119,12 @@ public class Main {
     public static void juegoDePruebaPacientes(Sistema s, Prueba p) {
         p.ver(s.agregarPaciente("Augusto", 38294382, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Se agrega paciente: Augusto");
         p.ver(s.agregarPaciente("Susana", 38948572, "Luis Alberto de Herrera, 4503").resultado, Retorno.Resultado.OK, "Se agrega paciente: Susana");
-        p.ver(s.agregarPaciente("Augusto", -38294382, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.OK, "Numero de documento invalido");
-        p.ver(s.agregarPaciente("Susana", -38948572, "Luis Alberto de Herrera, 4503").resultado, Retorno.Resultado.OK, "Numero de documento invalido");
+        p.ver(s.agregarPaciente("Augusto", -38294382, "Bulevar General Artigas, 2333").resultado, Retorno.Resultado.ERROR_3, "Numero de documento invalido");
+        p.ver(s.agregarPaciente("Susana", -38948572, "Luis Alberto de Herrera, 4503").resultado, Retorno.Resultado.ERROR_3, "Numero de documento invalido");
         p.ver(s.listarPacientes().resultado, Retorno.Resultado.OK, "Se logro listar los pacientes exitosamente");                
-        p.ver(s.agregarPaciente("Bruno", -38948572, "18 de Julio, 1029").resultado, Retorno.Resultado.ERROR_1, "Numero de documento invalido");
-        p.ver(s.agregarPaciente("Ramon", 22342235, "Avenida Italia, 8484").resultado, Retorno.Resultado.ERROR_3, "Se agrega paciente: Ramon");
-        p.ver(s.agregarPaciente("Eduardo", 48392203, "Paraguay, 1873").resultado, Retorno.Resultado.ERROR_3, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Bruno", -38948572, "18 de Julio, 1029").resultado, Retorno.Resultado.ERROR_3, "Numero de documento invalido");
+        p.ver(s.agregarPaciente("Ramon", 22342235, "Avenida Italia, 8484").resultado, Retorno.Resultado.OK, "Se agrega paciente: Ramon");
+        p.ver(s.agregarPaciente("Eduardo", 48392203, "Paraguay, 1873").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
         p.ver(s.listarPacientes().resultado, Retorno.Resultado.OK, "Se logro listar los pacientes exitosamente");                        
         System.out.println("====================  Se Vacia Lista Pacientes  ========================");
         s._pacientes.vaciar();
@@ -152,6 +153,12 @@ public class Main {
         System.out.println("====================   Se Agrega Paciente 'Gaston' al Final   =======================");
         s._pacientes.agregarFinal(pacienteDos);        
         p.ver(s.listarPacientes().resultado, Retorno.Resultado.OK, "Se logro listar los pacientes exitosamente");                        
+        p.ver(s.agregarPaciente("Leonardo", 47292203, "Paraguay, 1811").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Fiorela", 47192203, "Paraguay, 1893").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Pablito", 47392203, "Paraguay, 1373").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Carla", 47492203, "Paraguay, 1233").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Joaquin", 47592203, "Paraguay, 1376").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");
+        p.ver(s.agregarPaciente("Pamela", 47792203, "Paraguay, 1123").resultado, Retorno.Resultado.OK, "Se agrega paciente: Eduardo");        
     }
 
     public static void juegoDePruebaNoImplementada(Sistema s, Prueba p) {                                
