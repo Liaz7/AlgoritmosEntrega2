@@ -29,18 +29,7 @@ public class Main {
         juegoDePruebaConsultasPendientesPaciente(s, p);
         juegoDePruebaHistoriaClinicaPaciente(s, p);
         juegoDePruebaTotalDeResevas(s, p);
-        p.imprimirResultadosPrueba();
-        s.listarConsultas(122);
-        System.out.println("");
-        s.listarConsultas(152);
-        System.out.println("");
-        s.listarConsultas(150);
-        System.out.println("");
-        s.listarConsultas(159);
-        System.out.println("");
-        s.listarConsultas(820);
-        System.out.println("");
-        s.listarConsultas(999);
+        p.imprimirResultadosPrueba();        
     }
 
     public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
