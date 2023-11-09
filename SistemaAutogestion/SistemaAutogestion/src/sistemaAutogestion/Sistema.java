@@ -25,7 +25,6 @@ public class Sistema implements IObligatorio {
     public Retorno crearSistemaDeAutogestion(int maxPacientesporMedico) {
         if (maxPacientesporMedico <= 0 || maxPacientesporMedico > 15) {
             return new Retorno(Retorno.Resultado.ERROR_1);
-
         } else {
             maximoPacientes = maxPacientesporMedico;
             return new Retorno(Retorno.Resultado.OK);
@@ -496,9 +495,13 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno consultasPendientesPaciente(int CIPaciente
-    ) {
-        return new Retorno(Retorno.resultado.NO_IMPLEMENTADA);
+    public Retorno consultasPendientesPaciente(int CIPaciente) {
+        if(!existePacientePorCI(CIPaciente)){
+            return new Retorno(Retorno.resultado.ERROR_1);
+        }
+        _consultaPacientes.mostrarConsultasCiRec(_consultaPacientes.getInicio(), CIPaciente);        
+        
+        return new Retorno(Retorno.resultado.OK);
     }
 
     @Override

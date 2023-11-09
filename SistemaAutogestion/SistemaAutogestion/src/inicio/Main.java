@@ -26,8 +26,10 @@ public class Main {
         juegoDePruebaAnunciarLlegadaAlTotem(s, p);
         juegoDePruebaTerminarConsultaMedicoPaciente(s, p);
         juegoDePruebaCerrarConsulta(s, p);
+        juegoDePruebaConsultasPendientesPaciente(s, p);
         juegoDePruebaHistoriaClinicaPaciente(s, p);
         juegoDePruebaTotalDeResevas(s, p);
+
         p.imprimirResultadosPrueba();
         
        /* s.listarMédicos();
@@ -43,6 +45,7 @@ public class Main {
         s.listarConsultas(820);
         System.out.println("");
         s.listarConsultas(999);*/
+
     }
 
     public static void juegoDePruebaConsultas(Sistema s, Prueba p) {
@@ -202,8 +205,7 @@ public class Main {
     }
 
     public static void juegoDePruebaNoImplementada(Sistema s, Prueba p) {
-        p.ver(s.listarPacientesEnEspera(295, new Date(2021, 2, 15)).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");
-        p.ver(s.consultasPendientesPaciente(53243471).resultado, Retorno.Resultado.ERROR_3, "Funcionalidad no implementada");
+        p.ver(s.listarPacientesEnEspera(295, new Date(2021, 2, 15)).resultado, Retorno.Resultado.ERROR_2, "Funcionalidad no implementada");        
     }
 
     public static void juegoDePruebaAnunciarLlegadaAlTotem(Sistema s, Prueba p) {
@@ -225,8 +227,7 @@ public class Main {
         p.ver(s.terminarConsultaMedicoPaciente(47792203, 999, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.ERROR_2, "Reserva en estado Pendiente");
         p.ver(s.terminarConsultaMedicoPaciente(41238985, 820, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.ERROR_2, "Reserva en estado Cerrada");
         p.ver(s.terminarConsultaMedicoPaciente(47192203, 999, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.OK, "Se termina la consulta efectivamente");
-        p.ver(s.terminarConsultaMedicoPaciente(47292203, 152, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.OK, "Se termina la consulta efectivamente");
-        
+        p.ver(s.terminarConsultaMedicoPaciente(47292203, 152, "El paciente sufre de risa cronica").resultado, Retorno.Resultado.OK, "Se termina la consulta efectivamente");        
     }
 
     public static void juegoDePruebaCerrarConsulta(Sistema s, Prueba p) {
@@ -234,11 +235,21 @@ public class Main {
         p.ver(s.cerrarConsulta(150, fechaActual).resultado, Retorno.Resultado.OK, "Se pudo cerrar la consulta");
         p.ver(s.cerrarConsulta(150, new Date(2023 - 1900, 8 - 1, 21)).resultado, Retorno.Resultado.ERROR_2, "No existe esta fecha");
         p.ver(s.cerrarConsulta(777, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Medico");
-        p.ver(s.cerrarConsulta(771, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Medico");        
+        p.ver(s.cerrarConsulta(771, fechaActual).resultado, Retorno.Resultado.ERROR_1, "No existe Medico");                                     
+    }
+    
+    public static void juegoDePruebaConsultasPendientesPaciente(Sistema s, Prueba p){
+        p.ver(s.consultasPendientesPaciente(53243000).resultado, Retorno.Resultado.ERROR_1, "No Existe Paciente");
+        p.ver(s.consultasPendientesPaciente(47392203).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
+        p.ver(s.consultasPendientesPaciente(47792203).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
+        p.ver(s.consultasPendientesPaciente(28785574).resultado, Retorno.Resultado.OK, "Se listaron las consultas pendientes");
     }
 
     public static void juegoDePruebaHistoriaClinicaPaciente(Sistema s, Prueba p) {
+        p.ver(s.historiaClínicaPaciente(28785000).resultado, Retorno.Resultado.ERROR_1, "No Existe Paciente");
         p.ver(s.historiaClínicaPaciente(28785574).resultado, Retorno.Resultado.OK, "Se mostró el historial clinico");
+        p.ver(s.historiaClínicaPaciente(47292203).resultado, Retorno.Resultado.OK, "Se mostró el historial clinico");
+        p.ver(s.historiaClínicaPaciente(49212856).resultado, Retorno.Resultado.OK, "Se mostró el historial clinico");
     }
 
     public static void juegoDePruebaTotalDeResevas(Sistema s, Prueba p) {
