@@ -15,11 +15,11 @@ public class Main {
         interfaz();
         Sistema s = new Sistema();
         Prueba p = new Prueba();
-        juegoDePruebaSistemaDeAutogestion(s, p);
-        juegoDePruebaMedicos(s, p);
-        juegoDePruebaPacientes(s, p);
+        //juegoDePruebaSistemaDeAutogestion(s, p);
+        //juegoDePruebaMedicos(s, p);
+        //juegoDePruebaPacientes(s, p);
         //juegoDePruebaNoImplementada(s, p);
-        juegoDePruebaAnunciarLlegadaAlTotem(s, p);
+        //juegoDePruebaAnunciarLlegadaAlTotem(s, p);                
 
         p.imprimirResultadosPrueba();
     }

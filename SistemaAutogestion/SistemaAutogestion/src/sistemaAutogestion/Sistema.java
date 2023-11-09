@@ -435,15 +435,40 @@ public class Sistema implements IObligatorio {
             Date fecha = new Date(año, mes, dia);
             int cantidadConsultas = obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(fecha, estado, especialidad);
             mat[dia][especialidad] = cantidadConsultas;
-            
+
             especialidad++;
-            
-            if(especialidad == espMax) {
+
+            if (especialidad == espMax) {
                 especialidad = 0;
                 dia++;
             }
         }
 
+    }
+
+    public void mostrarTotalDeReservas(int[][] mat, int cantidadDias, int espMax) {
+        int especialidad = 0;
+        int dia = 0;
+
+        while (dia < cantidadDias && especialidad < espMax) {
+            int elemento = mat[dia][especialidad];
+
+            if (dia == 0 && especialidad == 0) {
+                System.out.println("-----Especialidad");
+                System.out.println("Dia " + dia + "-     " + elemento + "     -");
+            } else if (especialidad == 0) {
+                System.out.println("Dia " + dia + "-     " + elemento + "     -");
+            } else {
+                System.out.println("-     " + elemento + "     -");
+            }
+
+            especialidad++;
+
+            if (especialidad == espMax) {
+                especialidad = 0;
+                dia++;
+            }
+        }
     }
 
     @Override
@@ -462,6 +487,7 @@ public class Sistema implements IObligatorio {
 
         int reporte[][] = new int[cantidadDias][espMax];
         agregarCantidadConsultasDentroDeUnaMatriz(reporte, cantidadDias, espMax, mes, año);
+        mostrarTotalDeReservas(reporte, cantidadDias, espMax);
         return new Retorno(Retorno.resultado.OK);
     }
 
