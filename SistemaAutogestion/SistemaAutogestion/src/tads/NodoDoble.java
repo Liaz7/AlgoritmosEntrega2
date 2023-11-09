@@ -1,7 +1,6 @@
 package tads;
 
 public class NodoDoble<T extends Comparable<T>> {
-
     private T dato;
     private NodoDoble<T> sig;
     private NodoDoble<T> ant;

@@ -138,6 +138,35 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
         }
         return estaElem;
     }
+    
+    public void reemplazarNodo(NodoLista nodoAntiguo, NodoLista nodoNuevo) {
+        if (inicio == null) {
+            // La lista está vacía, no se puede realizar la operación
+            return;
+        }
+
+        if (inicio == nodoAntiguo) {
+            // Si el nodo a reemplazar es el primer nodo            
+            nodoNuevo.setSiguiente(inicio.getSiguiente());            
+            inicio = nodoNuevo;
+            return;
+        }
+
+        NodoLista<T> actual = inicio;
+
+        while (actual.getSiguiente() != null && actual.getSiguiente() != nodoAntiguo) {
+            actual = actual.getSiguiente();
+        }
+
+        if (actual.getSiguiente() == null) {
+            // El nodo antiguo no se encontró en la lista
+            return;
+        }
+
+        // Se encontró el nodo anterior al nodo a reemplazar
+        actual.setSiguiente(nodoNuevo);
+        nodoNuevo.setSiguiente(nodoAntiguo.getSiguiente());
+    }
 
     @Override
     public void borrarElemento(NodoLista<T> nodo) {

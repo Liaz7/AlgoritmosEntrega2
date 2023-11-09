@@ -1,6 +1,5 @@
 package tads;
 
-
 public interface IListaDoble<T extends Comparable<T>> {
 public int getCantidad();
 public void setCantidad(int cantidad);
