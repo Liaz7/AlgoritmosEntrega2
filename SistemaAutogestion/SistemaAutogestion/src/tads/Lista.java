@@ -142,14 +142,16 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
     public void reemplazarNodo(NodoLista nodoAntiguo, NodoLista nodoNuevo) {
         if (inicio == null) {
             // La lista está vacía, no se puede realizar la operación
-            return;
+         
+            
         }
 
         if (inicio == nodoAntiguo) {
             // Si el nodo a reemplazar es el primer nodo            
             nodoNuevo.setSiguiente(inicio.getSiguiente());            
             inicio = nodoNuevo;
-            return;
+          
+            
         }
 
         NodoLista<T> actual = inicio;
@@ -160,7 +162,8 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
 
         if (actual.getSiguiente() == null) {
             // El nodo antiguo no se encontró en la lista
-            return;
+           
+            
         }
 
         // Se encontró el nodo anterior al nodo a reemplazar
