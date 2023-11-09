@@ -201,21 +201,15 @@ public class Sistema implements IObligatorio {
                 if (nodoActual.getDato().getCodMedico() == codMedico && fechaConsultaExistente.equals(fechaParametro)) {
                     numeroConsulta++;
                 }
-                
-                
 
                 nodoActual = nodoActual.getSiguiente();
-                
-              
 
             }
-            while (nodoEspera !=null){
+            while (nodoEspera != null) {
                 numeroConsulta++;
                 nodoEspera = nodoEspera.getSiguiente();
             }
-            
-            
-          
+
         }
 
         Consulta c = new Consulta(codMedico, ciPaciente, fecha, numeroConsulta, "pendiente");
@@ -225,7 +219,7 @@ public class Sistema implements IObligatorio {
             _consultaPacientes.agregarInicio(nodoLista.getDato());
         } else if (numeroConsulta > maximoPacientes) {
             _listaDeEsperaPorConsulta.agregarInicio(nodoLista.getDato());
-           
+
         } else {
             _consultaPacientes.agregarInicio(nodoLista.getDato());
         }
@@ -238,32 +232,23 @@ public class Sistema implements IObligatorio {
         NodoLista<Consulta> nodoConsulta = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoEnEspera = _listaDeEsperaPorConsulta.getInicio();
         NodoLista<Consulta> nodoAnterior = null;
-        
-        if(_consultaPacientes.esVacia()){
+        NodoLista<Consulta> nodoConsultaExistente = existePacienteConConsultas(codMedico, ciPaciente);
+
+        if (_consultaPacientes.esVacia()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        
-        while(nodoConsulta != null){
-            
-            if(nodoConsulta.getDato().getCodMedico() == codMedico && nodoConsulta.getDato().getCiPaciente() == ciPaciente && nodoConsulta.getDato().getEstado().equals("pendiente")){
-                _consultaPacientes.borrarElemento(nodoConsulta);                            
-              //  nodoAnterior.setSiguiente(nodoEnEspera);               
-              //  _listaDeEsperaPorConsulta.setInicio(nodoEnEspera.getSiguiente()); 
-              //  nodoEnEspera.getDato().setNumero(nodoConsulta.getDato().getNumero());
-                
-                return new Retorno(Retorno.Resultado.OK);
-            }
-            nodoAnterior = nodoConsulta;
-            nodoConsulta = nodoConsulta.getSiguiente();
-        }
-        
-         if (nodoAnterior.getSiguiente() == null) {
-            _consultaPacientes.borrarElemento(nodoAnterior);
-            return new Retorno(Retorno.Resultado.OK);
-        }
 
-        return new Retorno(Retorno.Resultado.ERROR_1);
-        
+        if (_listaDeEsperaPorConsulta.esVacia() && nodoConsultaExistente != null) {
+            Consulta consulta = nodoConsultaExistente.getDato();
+            if (consulta.getEstado().equals("pendiente")) {
+                _consultaPacientes.borrarElemento(nodoConsultaExistente);                
+            }
+        } else if (!_listaDeEsperaPorConsulta.esVacia()) {
+            nodoEnEspera.getDato().setNumero(nodoConsultaExistente.getDato().getNumero());
+            _consultaPacientes.reemplazarNodo(nodoConsultaExistente, nodoEnEspera);
+        }       
+
+        return new Retorno(Retorno.Resultado.OK);
     }
 
     //Pre: El atributo CI no puede ser vacio     
@@ -325,21 +310,21 @@ public class Sistema implements IObligatorio {
 
     //Pre: codMedico y CIPaciente no son nulos y son ambos de tipo int
     //Post: Devuelve true existe una cosnulta para el paciente:CIPaciente con el medico:codMedico
-    private boolean existePacienteConConsultas(int codMedico, int CIPaciente) {
+    private NodoLista<Consulta> existePacienteConConsultas(int codMedico, int CIPaciente) {
         NodoLista<Consulta> nodoActual = _consultaPacientes.getInicio();
         NodoLista<Consulta> nodoAnterior = null;
 
         while (nodoActual != null) {
             Consulta consultaActual = nodoActual.getDato();
             if (consultaActual.getCiPaciente() == CIPaciente && consultaActual.getCodMedico() == codMedico) {
-                return true;
+                return nodoActual;
             }
 
             nodoAnterior = nodoActual;
             nodoActual = nodoActual.getSiguiente();
         }
 
-        return false;
+        return null;
     }
 
     @Override
@@ -352,7 +337,7 @@ public class Sistema implements IObligatorio {
             return new Retorno(Retorno.resultado.ERROR_1);
         }
 
-        if (NodoPaciente == null || !existePacienteConConsultas(codMedico, CIPaciente)) {
+        if (NodoPaciente == null || existePacienteConConsultas(codMedico, CIPaciente) == null) {
             return new Retorno(Retorno.resultado.ERROR_2);
         }
 
@@ -544,7 +529,7 @@ public class Sistema implements IObligatorio {
         }
     }
 
-    private int obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(Date fecha, String estado, int esp) {        
+    private int obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(Date fecha, String estado, int esp) {
         String fechaFormateada = formato.format(fecha);
         NodoDoble<Consulta> aux = _historialClinico.getInicio();
         Consulta consulta = aux.getDato();
@@ -567,7 +552,7 @@ public class Sistema implements IObligatorio {
     }
 
     private void agregarCantidadConsultasDentroDeUnaMatriz(int[][] mat, int cantidadDias, int espMax, int mes, int año) {
-        String estado = "cerrada";        
+        String estado = "cerrada";
 
         for (int dia = 0; dia < cantidadDias; dia++) {
             for (int especialidad = 0; especialidad < espMax; especialidad++) {
@@ -575,7 +560,7 @@ public class Sistema implements IObligatorio {
                 int cantidadConsultas = obtenerLaCantidadDeConsultasPorFechaEstadoYEspecialidad(fecha, estado, especialidad);
                 mat[dia][especialidad] = cantidadConsultas;
             }
-        }                                          
+        }
 
     }
 
@@ -584,12 +569,12 @@ public class Sistema implements IObligatorio {
         int dia = 0;
 
         for (int i = 0; i < mat.length; i++) {
-            if(i == 0){
-             System.out.println("---------Especialidad");   
+            if (i == 0) {
+                System.out.println("---------Especialidad");
             }
-            
-            System.out.print("dia: " + i + "\t");                        
-            
+
+            System.out.print("dia: " + i + "\t");
+
             // Iterar sobre columnas                                    
             for (int j = especialidad; j < mat[i].length; j++) {
                 System.out.print("-   " + mat[i][j] + "   -" + "\t");
