@@ -69,11 +69,15 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
     @Override
     public void agregarInicio(T x) {
 
-        NodoLista<T> nuevo = new NodoLista((Comparable) x);
-        nuevo.setSiguiente(this.inicio);
-        this.setInicio(nuevo);
-        if (esVacia()) {
-            fin = inicio;
+        NodoLista<T> nuevo = new NodoLista<T>( x);
+     
+         if (this.esVacia()){
+            this.setInicio(nuevo);
+            this.setFin(nuevo);
+        }
+        else {
+            nuevo.setSiguiente(this.getInicio());
+            this.setInicio(nuevo);
         }
     }
 
